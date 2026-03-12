@@ -6,317 +6,33 @@
   <title>Autosled Pricing Tool</title>
   <style>
     :root {
-      --bg: #f3f7fc;
-      --card: #ffffff;
-      --text: #0f172a;
-      --muted: #64748b;
-      --line: #dbe3ee;
-      --accent: #2563eb;
-      --accent2: #0f766e;
-      --danger: #b91c1c;
-      --soft: #f8fafc;
-      --shadow: 0 14px 36px rgba(15, 23, 42, 0.08);
+      --bg:#f4f7fb; --card:#fff; --text:#122033; --muted:#66788a; --line:#d7e0ea;
+      --accent:#1d4ed8; --accent2:#0f766e; --danger:#b91c1c; --soft:#eef4ff;
     }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      color: var(--text);
-      background: linear-gradient(180deg, #edf3fa 0%, #f8fbff 100%);
-    }
-    .topbar {
-      background: #0f172a;
-      color: #fff;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .topbar-inner,
-    .wrap {
-      width: min(1320px, calc(100% - 32px));
-      margin: 0 auto;
-    }
-    .topbar-inner {
-      min-height: 64px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-    }
-    .topbar-title {
-      font-size: 18px;
-      font-weight: bold;
-      letter-spacing: .02em;
-    }
-    .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      font-size: 14px;
-    }
-    .logout-btn {
-      border: 1px solid rgba(255,255,255,0.18);
-      background: rgba(255,255,255,0.08);
-      color: white;
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .wrap {
-      padding: 26px 0 40px;
-    }
-    h1 {
-      margin: 0 0 8px;
-      font-size: 32px;
-    }
-    .lead {
-      margin: 0 0 22px;
-      color: var(--muted);
-      max-width: 940px;
-      line-height: 1.5;
-    }
-    .summary-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-    .metric {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      padding: 14px;
-      background: #fbfdff;
-      box-shadow: var(--shadow);
-    }
-    .metric .label {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-    .metric .value {
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 1.15;
-    }
-    .metric .sub {
-      margin-top: 6px;
-      color: var(--muted);
-      font-size: 12px;
-      line-height: 1.35;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: 1.45fr 1fr;
-      gap: 18px;
-      align-items: start;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--line);
-      border-radius: 18px;
-      box-shadow: var(--shadow);
-      padding: 18px;
-    }
-    h2 {
-      margin: 0 0 16px;
-      font-size: 20px;
-    }
-    .section-title {
-      margin: 18px 0 10px;
-      font-size: 13px;
-      text-transform: uppercase;
-      color: var(--muted);
-      letter-spacing: .06em;
-      font-weight: bold;
-    }
-    .row {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .row.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-    .row.one { grid-template-columns: 1fr; }
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: bold;
-      color: #334155;
-      margin-bottom: 6px;
-    }
-    input, select {
-      width: 100%;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      padding: 12px 13px;
-      font-size: 14px;
-      outline: none;
-      background: white;
-      transition: border-color .15s ease, box-shadow .15s ease;
-    }
-    input:focus, select:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.10);
-    }
-    input[readonly] {
-      background: #f8fafc;
-      color: #334155;
-    }
-    .check-row {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .check-card {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      min-height: 48px;
-      padding: 12px 14px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: #f8fbff;
-    }
-    .check-card input[type="checkbox"] {
-      width: 18px;
-      height: 18px;
-      margin: 0;
-      flex: 0 0 auto;
-    }
-    .check-card span {
-      font-size: 14px;
-      font-weight: bold;
-      color: #334155;
-    }
-    .vehicle-card {
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: #fbfdff;
-      padding: 14px;
-      margin-bottom: 12px;
-    }
-    .vehicle-head {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-    .vehicle-head strong { font-size: 14px; }
-    .btn-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-    }
-    button {
-      border-radius: 12px;
-      padding: 12px 16px;
-      font-size: 14px;
-      font-weight: bold;
-    }
-    button.primary {
-      background: var(--accent);
-      color: white;
-      border: none;
-      cursor: pointer;
-    }
-    button.primary:hover { opacity: 0.95; }
-    button.secondary {
-      background: white;
-      color: #0f172a;
-      border: 1px solid var(--line);
-      cursor: pointer;
-    }
-    button.danger {
-      background: white;
-      color: #991b1b;
-      border: 1px solid #fecaca;
-      cursor: pointer;
-    }
-    .status {
-      margin-top: 14px;
-      padding: 12px 14px;
-      border-radius: 10px;
-      display: none;
-    }
-    .status.error {
-      display: block;
-      background: #fef2f2;
-      color: var(--danger);
-      border: 1px solid #fecaca;
-    }
-    .status.ok {
-      display: block;
-      background: #ecfeff;
-      color: var(--accent2);
-      border: 1px solid #a5f3fc;
-    }
-    .logic-list {
-      margin: 0;
-      padding-left: 20px;
-      line-height: 1.5;
-    }
-    .logic-list li { margin-bottom: 8px; }
-    .mono {
-      font-family: Consolas, Monaco, monospace;
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-size: 12px;
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 14px;
-      border-radius: 12px;
-      overflow: auto;
-      min-height: 180px;
-    }
-    .result-big {
-      font-size: 30px;
-      font-weight: bold;
-      line-height: 1.1;
-      margin-bottom: 8px;
-    }
-    .detail-grid {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 12px;
-      margin-top: 14px;
-    }
-    .detail-box {
-      border: 1px solid var(--line);
-      background: #fbfdff;
-      border-radius: 14px;
-      padding: 14px;
-    }
-    .detail-box .k {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 6px;
-      text-transform: uppercase;
-      letter-spacing: .04em;
-    }
-    .detail-box .v {
-      font-size: 16px;
-      font-weight: bold;
-      line-height: 1.35;
-    }
-    .hint {
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 5px;
-      line-height: 1.35;
-    }
-    @media (max-width: 980px) {
-      .grid, .summary-grid, .row, .row.three, .row.four, .check-row, .detail-grid {
-        grid-template-columns: 1fr;
-      }
-      .topbar-inner, .wrap {
-        width: min(1320px, calc(100% - 24px));
-      }
-    }
+    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+    .topbar{background:#0f172a;color:#fff}.topbar-inner{max-width:1280px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
+    .topbar-title{font-weight:700}.topbar-right{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.85)}
+    .logout-btn{border:1px solid rgba(255,255,255,.2);background:transparent;color:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}
+    .wrap{max-width:1280px;margin:0 auto;padding:24px}.lead{color:var(--muted);margin:8px 0 24px}
+    .summary-grid,.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+    .layout{display:grid;grid-template-columns:1.45fr 1fr;gap:20px;margin-top:20px}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
+    .card h2{margin:0 0 14px;font-size:18px}.section-label{margin:18px 0 10px;font-size:12px;font-weight:700;color:#4f46e5;text-transform:uppercase;letter-spacing:.06em}
+    .form-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}.span-12{grid-column:span 12}.span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.span-2{grid-column:span 2}
+    label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted);font-weight:700}
+    input,select,button,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;background:#fff}
+    input[readonly],textarea[readonly]{background:#f8fafc;color:#334155}
+    button{cursor:pointer;font-weight:700}.primary{background:var(--accent);border-color:var(--accent);color:#fff}.secondary{background:#fff;color:var(--text)}
+    .action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.action-row button{width:auto;min-width:180px}
+    .summary-card,.metric{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfdff}.summary-label,.metric .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+    .summary-value,.metric .value{font-size:24px;font-weight:700}.summary-sub{font-size:12px;color:var(--muted);margin-top:8px}
+    .status{margin-top:14px;padding:12px 14px;border-radius:10px;display:none}.status.error{display:block;background:#fef2f2;color:var(--danger);border:1px solid #fecaca}.status.ok{display:block;background:#ecfeff;color:var(--accent2);border:1px solid #a5f3fc}
+    .vehicle-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfdff;margin-bottom:12px}.vehicle-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .checkbox-row{display:flex;align-items:center;gap:10px;height:100%;padding-top:28px}.checkbox-wrap{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;width:100%}
+    .checkbox-wrap input{width:16px;height:16px;margin:0}.checkbox-wrap label{margin:0;color:var(--text);font-size:14px}
+    .mono{font-family:Consolas,Monaco,monospace;white-space:pre-wrap;word-break:break-word;font-size:12px;background:#0f172a;color:#e2e8f0;padding:14px;border-radius:12px;overflow:auto;min-height:180px}
+    .logic-list{margin:0;padding-left:18px}.logic-list li{margin-bottom:8px;line-height:1.4}.small{font-size:12px;color:var(--muted)}
+    @media (max-width:1000px){.layout,.summary-grid,.metric-grid{grid-template-columns:1fr 1fr}} @media (max-width:760px){.layout,.summary-grid,.metric-grid,.form-grid{grid-template-columns:1fr}.span-12,.span-6,.span-4,.span-3,.span-2{grid-column:span 1}.topbar-inner,.wrap{padding-left:16px;padding-right:16px}.action-row button{width:100%}}
   </style>
 </head>
 <body>
@@ -333,610 +49,319 @@
   </div>
 
   <div class="wrap">
-    <h1>Quote Recommendation Tool</h1>
-    <p class="lead">Get Super Dispatch pricing, auto-populate shipment miles for the sliding margin curve, compare against Autosled historical and CentralDispatch, and show the logic used for the final customer quote.</p>
+    <h1>Customer Quote Recommendation</h1>
+    <p class="lead">Pull Super Dispatch pricing, compare it to your own cost inputs, auto-calculate mileage for the margin curve, and show the exact logic used.</p>
 
     <div class="summary-grid">
-      <div class="metric">
-        <div class="label">Est Carrier Cost</div>
-        <div class="value" id="summaryCarrier">—</div>
-        <div class="sub" id="summaryCarrierSub">No calculation yet</div>
-      </div>
-      <div class="metric">
-        <div class="label">Recommended Customer Price</div>
-        <div class="value" id="summaryCustomer">—</div>
-        <div class="sub" id="summaryCustomerSub">Exact quote or range</div>
-      </div>
-      <div class="metric">
-        <div class="label">Gross Margin Dollars</div>
-        <div class="value" id="summaryMarginDollars">—</div>
-        <div class="sub" id="summaryMarginDollarsSub">Customer price minus carrier cost</div>
-      </div>
-      <div class="metric">
-        <div class="label">Gross Margin %</div>
-        <div class="value" id="summaryMarginPct">—</div>
-        <div class="sub" id="summaryMarginPctSub">Applied after margin curve</div>
-      </div>
+      <div class="summary-card"><div class="summary-label">Est Carrier Cost</div><div id="sumCarrier" class="summary-value">—</div><div class="summary-sub">Base cost used in the calculation</div></div>
+      <div class="summary-card"><div class="summary-label">Recommended Customer Price</div><div id="sumCustomer" class="summary-value">—</div><div class="summary-sub">Exact quote or price range</div></div>
+      <div class="summary-card"><div class="summary-label">Gross Margin Dollars</div><div id="sumMarginDollars" class="summary-value">—</div><div class="summary-sub">Customer price minus est carrier cost</div></div>
+      <div class="summary-card"><div class="summary-label">Gross Margin %</div><div id="sumMarginPct" class="summary-value">—</div><div class="summary-sub">Margin after formula and surcharges</div></div>
     </div>
 
-    <div class="grid">
+    <div class="layout">
       <div class="card">
-        <h2>Quote Request</h2>
-        <form id="quoteForm">
-          <div class="section-title">Lane</div>
-          <div class="row">
-            <div>
-              <label for="pickupZip">Pickup ZIP</label>
-              <input id="pickupZip" maxlength="5" inputmode="numeric" required />
-            </div>
-            <div>
-              <label for="deliveryZip">Dropoff ZIP</label>
-              <input id="deliveryZip" maxlength="5" inputmode="numeric" required />
-            </div>
-          </div>
-          <div class="row">
-            <div>
-              <label for="pickupCity">Pickup City</label>
-              <input id="pickupCity" readonly />
-            </div>
-            <div>
-              <label for="pickupState">Pickup State</label>
-              <input id="pickupState" readonly />
-            </div>
-          </div>
-          <div class="row">
-            <div>
-              <label for="deliveryCity">Dropoff City</label>
-              <input id="deliveryCity" readonly />
-            </div>
-            <div>
-              <label for="deliveryState">Dropoff State</label>
-              <input id="deliveryState" readonly />
-            </div>
-          </div>
+        <h2>Quote Inputs</h2>
+        <div class="section-label">Lane</div>
+        <div class="form-grid">
+          <div class="span-3"><label for="pickupZip">Pickup ZIP</label><input id="pickupZip" maxlength="5" inputmode="numeric" placeholder="60638"></div>
+          <div class="span-3"><label for="pickupCity">Pickup City</label><input id="pickupCity" readonly></div>
+          <div class="span-2"><label for="pickupState">Pickup State</label><input id="pickupState" readonly></div>
+          <div class="span-4 checkbox-row"><div class="checkbox-wrap"><input id="pickupAuction" type="checkbox"><label for="pickupAuction">Pickup is auction</label></div></div>
 
-          <div class="check-row">
-            <label class="check-card" for="pickupAuction">
-              <input id="pickupAuction" type="checkbox" />
-              <span>Pickup is auction</span>
-            </label>
-            <label class="check-card" for="deliveryAuction">
-              <input id="deliveryAuction" type="checkbox" />
-              <span>Dropoff is auction</span>
-            </label>
-          </div>
+          <div class="span-3"><label for="deliveryZip">Dropoff ZIP</label><input id="deliveryZip" maxlength="5" inputmode="numeric" placeholder="75050"></div>
+          <div class="span-3"><label for="deliveryCity">Dropoff City</label><input id="deliveryCity" readonly></div>
+          <div class="span-2"><label for="deliveryState">Dropoff State</label><input id="deliveryState" readonly></div>
+          <div class="span-4 checkbox-row"><div class="checkbox-wrap"><input id="deliveryAuction" type="checkbox"><label for="deliveryAuction">Dropoff is auction</label></div></div>
+        </div>
 
-          <div class="section-title">Quote Settings</div>
-          <div class="row three">
-            <div>
-              <label for="quoteMode">Result Type</label>
-              <select id="quoteMode">
-                <option value="exact">Exact Quote</option>
-                <option value="range">Price Range</option>
-              </select>
-            </div>
-            <div>
-              <label for="shipmentMiles">Shipment Miles</label>
-              <input id="shipmentMiles" readonly />
-              <div class="hint">Auto-populated from pickup and dropoff ZIP codes.</div>
-            </div>
-            <div>
-              <label for="marginFloor">Margin Floor</label>
-              <select id="marginFloor">
-                <option value="12">12%</option>
-                <option value="13">13%</option>
-                <option value="14" selected>14%</option>
-                <option value="15">15%</option>
-              </select>
-            </div>
-          </div>
+        <div class="section-label">Quote Settings</div>
+        <div class="form-grid">
+          <div class="span-3"><label for="quoteMode">Result Type</label><select id="quoteMode"><option value="exact">Exact Quote</option><option value="range">Price Range</option></select></div>
+          <div class="span-3"><label for="trailerType">Trailer Type</label><select id="trailerType"><option value="open">Open</option><option value="enclosed">Enclosed</option></select></div>
+          <div class="span-3"><label for="miles">Estimated Miles</label><input id="miles" readonly placeholder="Auto-populates from ZIPs"></div>
+          <div class="span-3"><label for="marginFloor">Margin Floor</label><select id="marginFloor"><option value="12">12%</option><option value="13">13%</option><option value="14" selected>14%</option><option value="15">15%</option></select></div>
+        </div>
 
-          <div class="section-title">Carrier Cost Inputs</div>
-          <div class="row three">
-            <div>
-              <label for="sdPrice">Super Dispatch Price</label>
-              <input id="sdPrice" type="number" step="0.01" min="0" />
-            </div>
-            <div>
-              <label for="historicalPrice">Autosled Historical Price</label>
-              <input id="historicalPrice" type="number" step="0.01" min="0" />
-            </div>
-            <div>
-              <label for="centralDispatchPrice">CentralDispatch Price</label>
-              <input id="centralDispatchPrice" type="number" step="0.01" min="0" />
-            </div>
-          </div>
+        <div class="section-label">Carrier Cost Inputs</div>
+        <div class="form-grid">
+          <div class="span-4"><label for="sdPrice">Super Dispatch Price</label><input id="sdPrice" type="number" step="0.01" min="0" placeholder="Pulled from API"></div>
+          <div class="span-4"><label for="historicalPrice">Autosled Historical</label><input id="historicalPrice" type="number" step="0.01" min="0" placeholder="Manual input"></div>
+          <div class="span-4"><label for="centralPrice">CentralDispatch</label><input id="centralPrice" type="number" step="0.01" min="0" placeholder="Manual input"></div>
+        </div>
 
-          <div class="section-title">Vehicle</div>
-          <div id="vehicles"></div>
-          <div class="btn-row">
-            <button type="button" class="secondary" id="addVehicleBtn">Add Vehicle</button>
-          </div>
+        <div class="section-label">Vehicles</div>
+        <div id="vehicles"></div>
+        <div class="action-row"><button id="addVehicleBtn" type="button" class="secondary">Add Another Vehicle</button></div>
 
-          <div class="btn-row">
-            <button type="button" class="primary" id="getQuoteBtn">Get Super Dispatch Price</button>
-            <button type="button" class="primary" id="calcBtn">Calculate Recommended Customer Price</button>
-            <button type="button" class="secondary" id="clearBtn">Clear</button>
-          </div>
-          <div id="status" class="status"></div>
-        </form>
+        <div class="action-row">
+          <button id="getQuoteBtn" type="button" class="primary">Get Super Dispatch Price</button>
+          <button id="calcBtn" type="button" class="primary">Calculate Recommended Customer Price</button>
+        </div>
+        <div id="status" class="status"></div>
       </div>
 
-      <div style="display:grid; gap:18px;">
-        <div class="card">
-          <h2>Recommended Output</h2>
-          <div class="result-big" id="resultBig">—</div>
-          <div id="resultSub" class="lead" style="margin:0 0 10px; font-size:14px;">No calculation yet.</div>
-          <div class="detail-grid">
-            <div class="detail-box">
-              <div class="k">Lane Difficulty</div>
-              <div class="v" id="laneDifficulty">—</div>
-            </div>
-            <div class="detail-box">
-              <div class="k">Lane Surcharge</div>
-              <div class="v" id="laneSurcharge">—</div>
-            </div>
-            <div class="detail-box">
-              <div class="k">Margin Applied</div>
-              <div class="v" id="marginApplied">—</div>
-            </div>
-            <div class="detail-box">
-              <div class="k">Base Cost Logic</div>
-              <div class="v" id="baseLogic">—</div>
-            </div>
+      <div>
+        <div class="card" style="margin-bottom:20px;">
+          <h2>Super Dispatch Results</h2>
+          <div class="metric-grid">
+            <div class="metric"><div class="label">Price</div><div id="sdMetricPrice" class="value">—</div></div>
+            <div class="metric"><div class="label">Price / Mile</div><div id="sdMetricPPM" class="value">—</div></div>
+            <div class="metric"><div class="label">Confidence</div><div id="sdMetricConfidence" class="value">—</div></div>
+            <div class="metric"><div class="label">Lane Difficulty</div><div id="sdMetricLane" class="value">—</div></div>
           </div>
+          <div class="form-grid" style="margin-top:14px;">
+            <div class="span-6"><label>Pickup RUCA / Category</label><input id="pickupRucaInfo" readonly></div>
+            <div class="span-6"><label>Dropoff RUCA / Category</label><input id="dropoffRucaInfo" readonly></div>
+          </div>
+          <div style="margin-top:12px;"><label for="rawResponse">Raw Response</label><div id="rawResponse" class="mono">No quote yet.</div></div>
         </div>
 
         <div class="card">
-          <h2>Super Dispatch Details</h2>
-          <div class="detail-grid">
-            <div class="detail-box">
-              <div class="k">Price</div>
-              <div class="v" id="sdPriceDisplay">—</div>
-            </div>
-            <div class="detail-box">
-              <div class="k">Price Per Mile</div>
-              <div class="v" id="sdPricePerMile">—</div>
-            </div>
-            <div class="detail-box">
-              <div class="k">Confidence</div>
-              <div class="v" id="sdConfidence">—</div>
-            </div>
-            <div class="detail-box">
-              <div class="k">Estimated Miles</div>
-              <div class="v" id="sdMiles">—</div>
-            </div>
-          </div>
-          <div class="detail-grid" style="margin-top:12px;">
-            <div class="detail-box">
-              <div class="k">Pickup RUCA</div>
-              <div class="v" id="pickupRucaSummary">—</div>
-            </div>
-            <div class="detail-box">
-              <div class="k">Dropoff RUCA</div>
-              <div class="v" id="dropoffRucaSummary">—</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <h2>Pricing Logic Steps</h2>
-          <ol id="logicSteps" class="logic-list">
-            <li>Enter ZIP codes and request a quote.</li>
-            <li>The tool will auto-populate miles for the margin curve.</li>
-            <li>Then calculate the recommended customer quote.</li>
-          </ol>
+          <h2>Logic Steps</h2>
+          <ol id="logic" class="logic-list"><li>Enter pickup and dropoff ZIP codes.</li><li>Get the Super Dispatch price, then calculate the recommended customer price.</li></ol>
         </div>
       </div>
-    </div>
-
-    <div class="card" style="margin-top:18px;">
-      <h2>Raw Response</h2>
-      <div id="rawResponse" class="mono">No quote yet.</div>
     </div>
   </div>
 
-  <script>
-    const $ = (id) => document.getElementById(id);
-    let lastQuoteResponse = null;
+<script>
+(() => {
+  const $ = (id) => document.getElementById(id);
+  const statusEl = $('status');
+  const vehiclesEl = $('vehicles');
+  let vehicleCount = 0;
+  let lastQuoteData = null;
 
-    function money(n) {
-      const num = Number(n);
-      if (!Number.isFinite(num)) return '—';
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(num);
-    }
-    function money2(n) {
-      const num = Number(n);
-      if (!Number.isFinite(num)) return '—';
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(num);
-    }
-    function percentFromDecimal(n) {
-      const num = Number(n);
-      if (!Number.isFinite(num)) return '—';
-      return `${(num * 100).toFixed(1)}%`;
-    }
-    function setStatus(message, type = 'ok') {
-      const el = $('status');
-      el.className = `status ${type}`;
-      el.textContent = message;
-    }
-    function clearStatus() {
-      const el = $('status');
-      el.className = 'status';
-      el.textContent = '';
-    }
-    async function loadSession() {
-      try {
-        const response = await fetch('/session');
-        if (!response.ok) return;
-        const data = await response.json();
-        if (data && data.username) {
-          $('userDisplay').textContent = `Signed in as ${data.username}`;
-        }
-      } catch (_) {}
-    }
-    function createVehicleCard(index, values = {}) {
-      const div = document.createElement('div');
-      div.className = 'vehicle-card';
-      div.innerHTML = `
-        <div class="vehicle-head">
-          <strong>Vehicle ${index + 1}</strong>
-          <button type="button" class="danger removeVehicleBtn">Remove</button>
+  const money = (n) => (n === null || n === undefined || n === '' || Number.isNaN(Number(n)) ? '—' : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Number(n)));
+  const money2 = (n) => (n === null || n === undefined || n === '' || Number.isNaN(Number(n)) ? '—' : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(Number(n)));
+  const pct = (n) => (n === null || n === undefined || Number.isNaN(Number(n)) ? '—' : `${(Number(n) * 100).toFixed(1)}%`);
+  const num = (id) => { const v = String($(id).value || '').trim(); return v === '' ? null : Number(v); };
+
+  function setStatus(message, type='ok') { statusEl.className = `status ${type}`; statusEl.textContent = message; }
+  function clearStatus() { statusEl.className = 'status'; statusEl.textContent = ''; }
+
+  async function loadSession() {
+    try {
+      const res = await fetch('/session');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data && data.username) $('userDisplay').textContent = `Signed in as ${data.username}`;
+    } catch (_) {}
+  }
+
+  function createVehicleCard(data = {}) {
+    vehicleCount += 1;
+    const idx = vehicleCount;
+    const card = document.createElement('div');
+    card.className = 'vehicle-card';
+    card.innerHTML = `
+      <div class="vehicle-head">
+        <strong>Vehicle ${idx}</strong>
+        ${idx === 1 ? '<span class="small">At least one vehicle is required</span>' : `<button type="button" class="secondary remove-btn">Remove</button>`}
+      </div>
+      <div class="form-grid">
+        <div class="span-3"><label>Vehicle Type</label>
+          <select class="vehicleType">
+            <option value="sedan">Sedan</option><option value="suv">SUV</option><option value="pickup">Pickup</option>
+            <option value="van">Van</option><option value="coupe">Coupe</option><option value="wagon">Wagon</option><option value="other">Other</option>
+          </select>
         </div>
-        <div class="row four">
-          <div>
-            <label>Type</label>
-            <select class="vehicleType">
-              <option value="sedan">Sedan</option>
-              <option value="suv">SUV</option>
-              <option value="pickup">Pickup</option>
-              <option value="van">Van</option>
-              <option value="coupe">Coupe</option>
-              <option value="wagon">Wagon</option>
-              <option value="other">Other</option>
-            </select>
-          </div>
-          <div>
-            <label>Make</label>
-            <input class="vehicleMake" />
-          </div>
-          <div>
-            <label>Model</label>
-            <input class="vehicleModel" />
-          </div>
-          <div>
-            <label>Year</label>
-            <input class="vehicleYear" inputmode="numeric" />
-          </div>
+        <div class="span-3"><label>Operable Status</label>
+          <select class="operableStatus"><option value="false">Operable</option><option value="true">Inoperable</option></select>
         </div>
-        <div class="row one">
-          <div>
-            <label>Inoperable</label>
-            <select class="vehicleInop">
-              <option value="false">No</option>
-              <option value="true">Yes</option>
-            </select>
-          </div>
-        </div>
-      `;
-      div.querySelector('.vehicleType').value = values.type || 'sedan';
-      div.querySelector('.vehicleMake').value = values.make || '';
-      div.querySelector('.vehicleModel').value = values.model || '';
-      div.querySelector('.vehicleYear').value = values.year || '';
-      div.querySelector('.vehicleInop').value = String(Boolean(values.is_inoperable));
-      div.querySelector('.removeVehicleBtn').addEventListener('click', () => {
-        if ($('vehicles').children.length === 1) {
-          setStatus('At least one vehicle is required.', 'error');
-          return;
-        }
-        div.remove();
-        renumberVehicles();
-      });
-      $('vehicles').appendChild(div);
+        <div class="span-2"><label>Year</label><input class="year" type="number" inputmode="numeric" placeholder="2023"></div>
+        <div class="span-2"><label>Make</label><input class="make" placeholder="Toyota"></div>
+        <div class="span-2"><label>Model</label><input class="model" placeholder="Camry"></div>
+      </div>`;
+    if (idx > 1) {
+      card.querySelector('.remove-btn').addEventListener('click', () => card.remove());
     }
-    function renumberVehicles() {
-      [...$('vehicles').children].forEach((card, i) => {
-        const label = card.querySelector('.vehicle-head strong');
-        if (label) label.textContent = `Vehicle ${i + 1}`;
-      });
+    card.querySelector('.vehicleType').value = data.type || 'sedan';
+    card.querySelector('.operableStatus').value = String(data.is_inoperable || false);
+    card.querySelector('.year').value = data.year || '';
+    card.querySelector('.make').value = data.make || '';
+    card.querySelector('.model').value = data.model || '';
+    vehiclesEl.appendChild(card);
+  }
+
+  function gatherVehicles() {
+    return Array.from(vehiclesEl.querySelectorAll('.vehicle-card')).map((card) => {
+      const year = card.querySelector('.year').value.trim();
+      const vehicle = {
+        type: card.querySelector('.vehicleType').value,
+        is_inoperable: card.querySelector('.operableStatus').value === 'true',
+        make: card.querySelector('.make').value.trim(),
+        model: card.querySelector('.model').value.trim()
+      };
+      if (year) vehicle.year = parseInt(year, 10);
+      return vehicle;
+    });
+  }
+
+  async function populateZip(prefix, zip) {
+    const cleanZip = String(zip || '').replace(/\D/g, '').slice(0, 5);
+    if (cleanZip.length !== 5) {
+      $(`${prefix}City`).value = '';
+      $(`${prefix}State`).value = '';
+      if (prefix === 'pickup') $('miles').value = '';
+      if (prefix === 'delivery') $('miles').value = '';
+      return;
     }
-    function getVehicles() {
-      return [...document.querySelectorAll('.vehicle-card')].map((card) => {
-        const yearRaw = card.querySelector('.vehicleYear').value.trim();
-        const vehicle = {
-          type: card.querySelector('.vehicleType').value,
-          is_inoperable: card.querySelector('.vehicleInop').value === 'true',
-          make: card.querySelector('.vehicleMake').value.trim(),
-          model: card.querySelector('.vehicleModel').value.trim()
-        };
-        if (yearRaw) vehicle.year = parseInt(yearRaw, 10);
-        return vehicle;
-      });
-    }
-    function clearZipFields(prefix) {
+    try {
+      const res = await fetch(`/api/zip/${cleanZip}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'ZIP lookup failed');
+      $(`${prefix}City`).value = data.city || '';
+      $(`${prefix}State`).value = data.state || '';
+      await maybePopulateMiles();
+    } catch (_) {
       $(`${prefix}City`).value = '';
       $(`${prefix}State`).value = '';
     }
-    async function lookupZip(prefix) {
-      const input = $(`${prefix}Zip`);
-      const cleanZip = String(input.value || '').replace(/\D/g, '').slice(0, 5);
-      input.value = cleanZip;
-      if (cleanZip.length !== 5) {
-        clearZipFields(prefix);
-        maybeClearMiles();
-        return;
-      }
-      try {
-        const response = await fetch(`/api/zip/${cleanZip}`);
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'ZIP lookup failed');
-        $(`${prefix}City`).value = data.city || '';
-        $(`${prefix}State`).value = data.state || '';
-        await updateMilesIfReady();
-      } catch (_) {
-        clearZipFields(prefix);
-        maybeClearMiles();
-      }
-    }
-    function maybeClearMiles() {
-      const pickupZip = $('pickupZip').value.trim();
-      const deliveryZip = $('deliveryZip').value.trim();
-      if (pickupZip.length !== 5 || deliveryZip.length !== 5) {
-        $('shipmentMiles').value = '';
-        $('sdMiles').textContent = '—';
-      }
-    }
-    async function updateMilesIfReady() {
-      const pickupZip = $('pickupZip').value.trim();
-      const deliveryZip = $('deliveryZip').value.trim();
-      if (pickupZip.length !== 5 || deliveryZip.length !== 5) return;
-      if (pickupZip === deliveryZip) {
-        $('shipmentMiles').value = '0';
-        $('sdMiles').textContent = '0';
-        return;
-      }
-      try {
-        const response = await fetch(`/api/distance?pickup_zip=${encodeURIComponent(pickupZip)}&delivery_zip=${encodeURIComponent(deliveryZip)}`);
-        const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'Distance lookup failed');
-        $('shipmentMiles').value = String(data.miles || '');
-        if (!lastQuoteResponse) $('sdMiles').textContent = data.miles_precise || data.miles || '—';
-      } catch (_) {
-        $('shipmentMiles').value = '';
-      }
-    }
-    function getNumber(id) {
-      const raw = $(id).value.trim();
-      if (raw === '') return null;
-      const n = Number(raw);
-      return Number.isFinite(n) ? n : null;
-    }
-    function computeMarginPct(miles, floorPct) {
-      const rawPct = 30 - (Number(miles) * 0.008);
-      return Math.max(Number(floorPct), rawPct) / 100;
-    }
-    function getComps() {
-      const comps = [];
-      const sd = getNumber('sdPrice');
-      const hist = getNumber('historicalPrice');
-      const cd = getNumber('centralDispatchPrice');
-      if (sd !== null && sd > 0) comps.push({ source: 'Super Dispatch', value: sd });
-      if (hist !== null && hist > 0) comps.push({ source: 'Autosled Historical', value: hist });
-      if (cd !== null && cd > 0) comps.push({ source: 'CentralDispatch', value: cd });
-      return comps.sort((a, b) => a.value - b.value);
-    }
-    function roundDollar(n) {
-      return Math.round(Number(n || 0));
-    }
-    async function getQuote() {
-      clearStatus();
-      const pickupZip = $('pickupZip').value.trim();
-      const deliveryZip = $('deliveryZip').value.trim();
-      if (pickupZip.length !== 5 || deliveryZip.length !== 5) {
-        setStatus('Please enter both 5-digit ZIP codes.', 'error');
-        return;
-      }
-      await updateMilesIfReady();
-      const payload = {
-        pickup: { city: $('pickupCity').value.trim(), state: $('pickupState').value.trim(), zip: pickupZip },
-        delivery: { city: $('deliveryCity').value.trim(), state: $('deliveryState').value.trim(), zip: deliveryZip },
-        trailer_type: 'open',
-        vehicles: getVehicles()
-      };
-      try {
-        setStatus('Requesting quote...', 'ok');
-        const response = await fetch('/quote', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-        const text = await response.text();
-        let data;
-        try {
-          data = JSON.parse(text);
-        } catch (_) {
-          $('rawResponse').textContent = text;
-          throw new Error('Server returned non-JSON response.');
-        }
-        $('rawResponse').textContent = JSON.stringify(data, null, 2);
-        if (!response.ok) throw new Error(data.error || 'Quote request failed.');
-        lastQuoteResponse = data;
-        const pricing = data?.superdispatch?.data || {};
-        $('sdPrice').value = pricing.price ?? '';
-        $('sdPriceDisplay').textContent = pricing.price != null ? money2(pricing.price) : '—';
-        $('sdPricePerMile').textContent = pricing.price_per_mile != null ? String(pricing.price_per_mile) : '—';
-        $('sdConfidence').textContent = pricing.confidence != null ? `${pricing.confidence}` : '—';
-        $('sdMiles').textContent = data?.distance?.miles_precise ?? data?.distance?.miles ?? $('shipmentMiles').value || '—';
-        if (data?.distance?.miles) $('shipmentMiles').value = String(data.distance.miles);
-        $('pickupRucaSummary').textContent = `${data?.pickup_access?.ruca_code ?? 'Unknown'} • ${data?.pickup_access?.ruca_category ?? 'Unknown'}`;
-        $('dropoffRucaSummary').textContent = `${data?.dropoff_access?.ruca_code ?? 'Unknown'} • ${data?.dropoff_access?.ruca_category ?? 'Unknown'}`;
-        $('laneDifficulty').textContent = data?.lane?.difficulty || 'Unknown';
-        $('laneSurcharge').textContent = money(data?.lane?.surcharge || 0);
-        setStatus('Quote loaded successfully.', 'ok');
-      } catch (error) {
-        setStatus(error.message || 'Quote request failed.', 'error');
-      }
-    }
-    function calculateRecommendation() {
-      clearStatus();
-      const miles = Number($('shipmentMiles').value || 0);
-      if (!Number.isFinite(miles) || miles <= 0) {
-        setStatus('Shipment miles could not be determined. Enter valid ZIP codes and click Get Super Dispatch Price first.', 'error');
-        return;
-      }
-      const comps = getComps();
-      if (!comps.length) {
-        setStatus('Enter at least one carrier cost, or click Get Super Dispatch Price first.', 'error');
-        return;
-      }
-      const isAuction = $('pickupAuction').checked || $('deliveryAuction').checked;
-      const quoteMode = $('quoteMode').value;
-      const floorPct = Number($('marginFloor').value);
-      const marginPct = computeMarginPct(miles, floorPct);
-      const values = comps.map(c => c.value).sort((a, b) => a - b);
-      const lowest = values[0];
-      const highest = values[values.length - 1];
-      const avgTwoLowest = values.length >= 2 ? (values[0] + values[1]) / 2 : lowest;
-      const laneDifficulty = lastQuoteResponse?.lane?.difficulty || 'Unknown';
-      const surcharge = Number(lastQuoteResponse?.lane?.surcharge || 0);
-      const steps = [];
-      const rawPct = 30 - (miles * 0.008);
-      steps.push(`Shipment miles auto-populated to ${miles.toLocaleString()} based on the pickup and dropoff ZIP codes.`);
-      steps.push(`Carrier costs considered: ${comps.map(c => `${c.source} ${money2(c.value)}`).join(', ')}.`);
-      steps.push(`Margin formula: 30% − (${miles.toLocaleString()} × 0.008%) = ${rawPct.toFixed(2)}% raw margin.`);
-      steps.push(`Margin floor selected: ${floorPct}%. Final applied margin: ${(marginPct * 100).toFixed(2)}%.`);
-      steps.push(`Lane difficulty from RUCA: ${laneDifficulty}. Surcharge applied: ${money(surcharge)}.`);
+  }
 
-      let resultText = '—';
-      let resultSub = '';
-      let summaryCarrier = '—';
-      let summaryCarrierSub = 'No calculation yet';
-      let summaryCustomer = '—';
-      let summaryCustomerSub = 'Exact quote or range';
-      let summaryMarginDollars = '—';
-      let summaryMarginPct = '—';
-      let baseLogic = '—';
+  async function maybePopulateMiles() {
+    const pickupZip = $('pickupZip').value.trim();
+    const deliveryZip = $('deliveryZip').value.trim();
+    if (pickupZip.length !== 5 || deliveryZip.length !== 5) return;
+    try {
+      const res = await fetch(`/api/miles?pickup_zip=${encodeURIComponent(pickupZip)}&delivery_zip=${encodeURIComponent(deliveryZip)}`);
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Mileage lookup failed');
+      $('miles').value = data.miles || '';
+      if (!$('pickupCity').value) $('pickupCity').value = data.pickup?.city || '';
+      if (!$('pickupState').value) $('pickupState').value = data.pickup?.state || '';
+      if (!$('deliveryCity').value) $('deliveryCity').value = data.delivery?.city || '';
+      if (!$('deliveryState').value) $('deliveryState').value = data.delivery?.state || '';
+    } catch (_) {}
+  }
 
-      if (quoteMode === 'exact') {
-        let baseCost = highest;
-        if (isAuction) {
-          baseCost = avgTwoLowest;
-          baseLogic = 'Auction exact quote uses the average of the 2 lowest carrier costs';
-          steps.push(`Auction selected, so the exact quote base cost is the average of the 2 lowest carrier costs = ${money2(baseCost)}.`);
-        } else {
-          baseLogic = 'Non-auction exact quote uses the highest carrier cost';
-          steps.push(`No auction selected, so the exact quote base cost is the highest carrier cost = ${money2(baseCost)}.`);
-        }
-        const beforeSurcharge = baseCost / (1 - marginPct);
-        const customerPrice = roundDollar(beforeSurcharge + surcharge);
-        const gmDollars = customerPrice - baseCost;
-        const gmPct = gmDollars / customerPrice;
-        steps.push(`Recommended customer price before surcharge = ${money2(baseCost)} ÷ (1 - ${(marginPct * 100).toFixed(2)}%) = ${money2(beforeSurcharge)}.`);
-        steps.push(`Final recommended customer price = ${money2(beforeSurcharge)} + ${money2(surcharge)} = ${money(customerPrice)}.`);
-        resultText = money(customerPrice);
-        resultSub = `Est carrier cost ${money2(baseCost)} • Gross margin ${money2(gmDollars)} • ${percentFromDecimal(gmPct)}`;
-        summaryCarrier = money(baseCost);
-        summaryCarrierSub = 'Base carrier cost used';
-        summaryCustomer = money(customerPrice);
-        summaryCustomerSub = 'Recommended exact quote';
-        summaryMarginDollars = money(gmDollars);
-        summaryMarginPct = percentFromDecimal(gmPct);
-      } else {
-        let lowBase = lowest;
-        let highBase = highest;
-        if (isAuction) {
-          highBase = avgTwoLowest;
-          baseLogic = 'Auction range uses lowest for low end and average of 2 lowest for high end';
-          steps.push(`Auction selected, so the low-end base cost is the lowest cost = ${money2(lowBase)}.`);
-          steps.push(`Auction selected, so the high-end base cost is the average of the 2 lowest costs = ${money2(highBase)}.`);
-        } else {
-          baseLogic = 'Non-auction range uses lowest for low end and highest for high end';
-          steps.push(`No auction selected, so the low-end base cost is the lowest cost = ${money2(lowBase)}.`);
-          steps.push(`No auction selected, so the high-end base cost is the highest cost = ${money2(highBase)}.`);
-        }
-        const lowBefore = lowBase / (1 - marginPct);
-        const highBefore = highBase / (1 - marginPct);
-        const lowPrice = roundDollar(lowBefore + surcharge);
-        const highPrice = roundDollar(highBefore + surcharge);
-        const lowGm = lowPrice - lowBase;
-        const highGm = highPrice - highBase;
-        const lowPct = lowGm / lowPrice;
-        const highPct = highGm / highPrice;
-        steps.push(`Low-end quote before surcharge = ${money2(lowBase)} ÷ (1 - ${(marginPct * 100).toFixed(2)}%) = ${money2(lowBefore)}.`);
-        steps.push(`High-end quote before surcharge = ${money2(highBase)} ÷ (1 - ${(marginPct * 100).toFixed(2)}%) = ${money2(highBefore)}.`);
-        steps.push(`Final recommended customer range = ${money(lowPrice)} to ${money(highPrice)} after adding ${money2(surcharge)} to both ends.`);
-        resultText = `${money(lowPrice)} – ${money(highPrice)}`;
-        resultSub = `Est carrier cost ${money2(lowBase)} – ${money2(highBase)} • Gross margin ${money2(lowGm)} – ${money2(highGm)} • ${percentFromDecimal(lowPct)} – ${percentFromDecimal(highPct)}`;
-        summaryCarrier = `${money(lowBase)} – ${money(highBase)}`;
-        summaryCarrierSub = 'Low/high carrier cost used';
-        summaryCustomer = `${money(lowPrice)} – ${money(highPrice)}`;
-        summaryCustomerSub = 'Recommended range';
-        summaryMarginDollars = `${money(lowGm)} – ${money(highGm)}`;
-        summaryMarginPct = `${percentFromDecimal(lowPct)} – ${percentFromDecimal(highPct)}`;
-      }
+  function computeMarginPct(miles, floorPct) {
+    const rawPctPoints = 30 - (Number(miles) * 0.008);
+    return Math.max(Number(floorPct), rawPctPoints) / 100;
+  }
+  function laneSurcharge(lane) { return lane === 'Hard' ? 100 : lane === 'Very Hard' ? 150 : 0; }
+  function avg(vals) { return vals.reduce((a,b) => a+b, 0) / vals.length; }
+  function roundDollar(n) { return Math.round(Number(n || 0)); }
 
-      $('resultBig').textContent = resultText;
-      $('resultSub').textContent = resultSub;
-      $('summaryCarrier').textContent = summaryCarrier;
-      $('summaryCarrierSub').textContent = summaryCarrierSub;
-      $('summaryCustomer').textContent = summaryCustomer;
-      $('summaryCustomerSub').textContent = summaryCustomerSub;
-      $('summaryMarginDollars').textContent = summaryMarginDollars;
-      $('summaryMarginPct').textContent = summaryMarginPct;
-      $('marginApplied').textContent = `${(marginPct * 100).toFixed(2)}%`;
-      $('baseLogic').textContent = baseLogic;
-
-      $('logicSteps').innerHTML = '';
-      steps.forEach((step) => {
-        const li = document.createElement('li');
-        li.textContent = step;
-        $('logicSteps').appendChild(li);
-      });
-      setStatus('Recommended customer pricing calculated.', 'ok');
+  async function getSuperDispatchPrice() {
+    clearStatus();
+    const pickupZip = $('pickupZip').value.trim();
+    const deliveryZip = $('deliveryZip').value.trim();
+    if (pickupZip.length !== 5 || deliveryZip.length !== 5) {
+      setStatus('Please enter both 5-digit ZIP codes.', 'error');
+      return;
     }
-    function clearAll() {
-      clearStatus();
-      lastQuoteResponse = null;
-      ['pickupZip','deliveryZip','pickupCity','pickupState','deliveryCity','deliveryState','shipmentMiles','sdPrice','historicalPrice','centralDispatchPrice'].forEach((id) => $(id).value = '');
-      $('pickupAuction').checked = false;
-      $('deliveryAuction').checked = false;
-      $('quoteMode').value = 'exact';
-      $('marginFloor').value = '14';
-      $('resultBig').textContent = '—';
-      $('resultSub').textContent = 'No calculation yet.';
-      $('summaryCarrier').textContent = '—';
-      $('summaryCarrierSub').textContent = 'No calculation yet';
-      $('summaryCustomer').textContent = '—';
-      $('summaryCustomerSub').textContent = 'Exact quote or range';
-      $('summaryMarginDollars').textContent = '—';
-      $('summaryMarginPct').textContent = '—';
-      $('laneDifficulty').textContent = '—';
-      $('laneSurcharge').textContent = '—';
-      $('marginApplied').textContent = '—';
-      $('baseLogic').textContent = '—';
-      $('sdPriceDisplay').textContent = '—';
-      $('sdPricePerMile').textContent = '—';
-      $('sdConfidence').textContent = '—';
-      $('sdMiles').textContent = '—';
-      $('pickupRucaSummary').textContent = '—';
-      $('dropoffRucaSummary').textContent = '—';
-      $('rawResponse').textContent = 'No quote yet.';
-      $('logicSteps').innerHTML = '<li>Enter ZIP codes and request a quote.</li><li>The tool will auto-populate miles for the margin curve.</li><li>Then calculate the recommended customer quote.</li>';
-      $('vehicles').innerHTML = '';
-      createVehicleCard(0);
+    await populateZip('pickup', pickupZip);
+    await populateZip('delivery', deliveryZip);
+
+    const payload = {
+      pickup: { city: $('pickupCity').value.trim(), state: $('pickupState').value.trim(), zip: pickupZip },
+      delivery: { city: $('deliveryCity').value.trim(), state: $('deliveryState').value.trim(), zip: deliveryZip },
+      trailer_type: $('trailerType').value,
+      vehicles: gatherVehicles()
+    };
+
+    try {
+      setStatus('Requesting Super Dispatch price...', 'ok');
+      const response = await fetch('/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+      const text = await response.text();
+      let data;
+      try { data = JSON.parse(text); } catch (_) { $('rawResponse').textContent = text; throw new Error('Server returned non-JSON response.'); }
+      $('rawResponse').textContent = JSON.stringify(data, null, 2);
+      if (!response.ok) throw new Error(data.error || 'Quote request failed.');
+
+      lastQuoteData = data;
+      const pricing = data?.superdispatch?.data || {};
+      $('sdPrice').value = pricing.price ?? '';
+      $('sdMetricPrice').textContent = money(pricing.price);
+      $('sdMetricPPM').textContent = pricing.price_per_mile ?? '—';
+      $('sdMetricConfidence').textContent = pricing.confidence ?? '—';
+      $('sdMetricLane').textContent = data.lane_difficulty || '—';
+      $('pickupRucaInfo').value = `${data?.pickup_access?.ruca_code ?? 'Unknown'} / ${data?.pickup_access?.ruca_category ?? 'Unknown'}`;
+      $('dropoffRucaInfo').value = `${data?.dropoff_access?.ruca_code ?? 'Unknown'} / ${data?.dropoff_access?.ruca_category ?? 'Unknown'}`;
+      if (data.estimated_miles) $('miles').value = data.estimated_miles;
+      setStatus('Super Dispatch price loaded successfully.', 'ok');
+    } catch (error) {
+      setStatus(error.message || 'Quote request failed.', 'error');
+    }
+  }
+
+  function calculateRecommendation() {
+    clearStatus();
+    const miles = Number($('miles').value || 0);
+    if (!miles) { setStatus('Miles have not populated yet. Enter both ZIP codes first.', 'error'); return; }
+
+    const comps = [
+      { name: 'Super Dispatch', value: num('sdPrice') },
+      { name: 'Autosled Historical', value: num('historicalPrice') },
+      { name: 'CentralDispatch', value: num('centralPrice') }
+    ].filter(x => x.value !== null && !Number.isNaN(x.value) && x.value > 0).sort((a,b)=>a.value-b.value);
+
+    if (!comps.length) { setStatus('Enter at least one carrier cost. Pulling Super Dispatch price counts as one.', 'error'); return; }
+
+    const floorPct = Number($('marginFloor').value);
+    const marginPct = computeMarginPct(miles, floorPct);
+    const isAuction = $('pickupAuction').checked || $('deliveryAuction').checked;
+    const laneDifficulty = lastQuoteData?.lane_difficulty || 'Unknown';
+    const surcharge = laneSurcharge(laneDifficulty);
+    const values = comps.map(c => c.value);
+    const lowest = values[0];
+    const highest = values[values.length - 1];
+    const avgTwoLowest = values.length >= 2 ? avg(values.slice(0, 2)) : lowest;
+    const mode = $('quoteMode').value;
+    const logic = [];
+
+    logic.push(`Carrier costs considered: ${comps.map(c => `${c.name} ${money2(c.value)}`).join(', ')}.`);
+    logic.push(`Estimated miles used for margin curve: ${miles.toLocaleString()}.`);
+    logic.push(`Margin formula: 30% - (${miles.toLocaleString()} × 0.008%) = ${(30 - miles * 0.008).toFixed(2)}% raw margin.`);
+    logic.push(`Selected floor: ${floorPct}%. Applied margin: ${(marginPct * 100).toFixed(2)}%.`);
+    logic.push(`Lane difficulty: ${laneDifficulty}. Surcharge added: ${money(surcharge)}.`);
+
+    if (mode === 'exact') {
+      const base = isAuction ? avgTwoLowest : highest;
+      logic.push(isAuction ? `Auction was selected, so exact quote base cost = average of the 2 lowest carrier costs = ${money2(base)}.` : `No auction selected, so exact quote base cost = highest carrier cost = ${money2(base)}.`);
+      const beforeSurcharge = base / (1 - marginPct);
+      const customer = roundDollar(beforeSurcharge + surcharge);
+      const gmDollars = customer - base;
+      const gmPct = gmDollars / customer;
+      logic.push(`Recommended customer price before surcharge = ${money2(base)} ÷ (1 - ${(marginPct * 100).toFixed(2)}%) = ${money2(beforeSurcharge)}.`);
+      logic.push(`Final recommended customer price = ${money2(beforeSurcharge)} + ${money(surcharge)} = ${money(customer)}.`);
+      $('sumCarrier').textContent = money(base);
+      $('sumCustomer').textContent = money(customer);
+      $('sumMarginDollars').textContent = money(gmDollars);
+      $('sumMarginPct').textContent = pct(gmPct);
+    } else {
+      const lowBase = lowest;
+      const highBase = isAuction ? avgTwoLowest : highest;
+      logic.push(isAuction ? `Auction was selected, so range low base = ${money2(lowBase)} and high base = average of the 2 lowest carrier costs = ${money2(highBase)}.` : `No auction selected, so range low base = ${money2(lowBase)} and high base = ${money2(highBase)}.`);
+      const lowCustomer = roundDollar((lowBase / (1 - marginPct)) + surcharge);
+      const highCustomer = roundDollar((highBase / (1 - marginPct)) + surcharge);
+      const lowGM = lowCustomer - lowBase;
+      const highGM = highCustomer - highBase;
+      const lowPct = lowGM / lowCustomer;
+      const highPct = highGM / highCustomer;
+      logic.push(`Low end customer price = ${money(lowCustomer)}. High end customer price = ${money(highCustomer)}.`);
+      $('sumCarrier').textContent = `${money(lowBase)} – ${money(highBase)}`;
+      $('sumCustomer').textContent = `${money(lowCustomer)} – ${money(highCustomer)}`;
+      $('sumMarginDollars').textContent = `${money(lowGM)} – ${money(highGM)}`;
+      $('sumMarginPct').textContent = `${pct(lowPct)} – ${pct(highPct)}`;
     }
 
-    $('pickupZip').addEventListener('input', () => lookupZip('pickup'));
-    $('deliveryZip').addEventListener('input', () => lookupZip('delivery'));
-    $('pickupZip').addEventListener('blur', () => lookupZip('pickup'));
-    $('deliveryZip').addEventListener('blur', () => lookupZip('delivery'));
-    $('getQuoteBtn').addEventListener('click', getQuote);
-    $('calcBtn').addEventListener('click', calculateRecommendation);
-    $('clearBtn').addEventListener('click', clearAll);
-    $('addVehicleBtn').addEventListener('click', () => createVehicleCard($('vehicles').children.length));
+    $('logic').innerHTML = logic.map(item => `<li>${item}</li>`).join('');
+    setStatus('Recommended customer price calculated.', 'ok');
+  }
 
-    createVehicleCard(0);
-    loadSession();
-  </script>
+  $('pickupZip').addEventListener('input', (e) => populateZip('pickup', e.target.value));
+  $('deliveryZip').addEventListener('input', (e) => populateZip('delivery', e.target.value));
+  $('addVehicleBtn').addEventListener('click', () => createVehicleCard());
+  $('getQuoteBtn').addEventListener('click', getSuperDispatchPrice);
+  $('calcBtn').addEventListener('click', calculateRecommendation);
+
+  createVehicleCard();
+  loadSession();
+})();
+</script>
 </body>
 </html>
