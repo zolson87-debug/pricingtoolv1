@@ -1,0 +1,15 @@
+{
+  "name": "autosled-pricing-v3",
+  "version": "1.0.0",
+  "description": "Autosled pricing tool with login, Super Dispatch proxy, RUCA lookup, and dynamic customer price recommendation",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
