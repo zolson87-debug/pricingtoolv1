@@ -6,8 +6,8 @@
   <title>Autosled Pricing Login</title>
   <style>
     :root {
-      --bg1: #0b1220;
-      --bg2: #172338;
+      --bg1: #0f172a;
+      --bg2: #1e293b;
       --card: rgba(255,255,255,0.96);
       --text: #0f172a;
       --muted: #64748b;
@@ -37,7 +37,7 @@
 
     .shell {
       width: 100%;
-      max-width: 1020px;
+      max-width: 980px;
       display: grid;
       grid-template-columns: 1.15fr 0.85fr;
       gap: 24px;
@@ -174,8 +174,13 @@
       transition: background .15s ease, transform .04s ease;
     }
 
-    button:hover { background: var(--accent-hover); }
-    button:active { transform: translateY(1px); }
+    button:hover {
+      background: var(--accent-hover);
+    }
+
+    button:active {
+      transform: translateY(1px);
+    }
 
     .foot {
       margin-top: 14px;
@@ -185,9 +190,18 @@
     }
 
     @media (max-width: 900px) {
-      .shell { grid-template-columns: 1fr; max-width: 520px; }
-      .hero { padding: 0; }
-      .hero h1 { font-size: 34px; }
+      .shell {
+        grid-template-columns: 1fr;
+        max-width: 520px;
+      }
+
+      .hero {
+        padding: 0;
+      }
+
+      .hero h1 {
+        font-size: 34px;
+      }
     }
   </style>
 </head>
@@ -195,21 +209,22 @@
   <div class="shell">
     <div class="hero">
       <div class="eyebrow">Autosled Internal Tool</div>
-      <h1>Dynamic Pricing + RUCA Quote Desk</h1>
+      <h1>Super Dispatch Pricing + RUCA</h1>
       <p>
-        Secure team access to compare Super Dispatch, Autosled historical, and CentralDispatch pricing, then generate a recommended customer price or range using your new margin logic.
+        Secure access for your team to quote lanes, view RUCA category, and estimate lane difficulty from one simple screen.
       </p>
+
       <div class="bullets">
-        <div class="bullet">Sliding margin formula tied to shipment miles</div>
-        <div class="bullet">Auction-specific quote logic and range logic</div>
-        <div class="bullet">RUCA lane difficulty surcharge built into the output</div>
+        <div class="bullet">Fast quote lookup through your Super Dispatch proxy</div>
+        <div class="bullet">Pickup and dropoff RUCA category visibility</div>
+        <div class="bullet">Internal-only access protected by login</div>
       </div>
     </div>
 
     <div class="card">
       <div class="brand">Sign In</div>
       <h2>Welcome back</h2>
-      <p class="sub">Enter the team username and password to open the pricing portal.</p>
+      <p class="sub">Enter the team username and password to open the pricing tool.</p>
 
       <div id="errorBox" class="error">Invalid username or password.</div>
 
