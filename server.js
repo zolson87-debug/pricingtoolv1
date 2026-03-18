@@ -22,7 +22,7 @@ try {
   rucaData = JSON.parse(fs.readFileSync(rucaPath, 'utf8'));
   console.log('RUCA data loaded:', Object.keys(rucaData).length, 'ZIP codes');
 } catch (err) {
-  console.error('Failed to load RUCA file:', err);
+  console.error('Failed to load ruca_by_zip.json:', err.message);
 }
 
 function rucaCategory(code) {
@@ -35,9 +35,9 @@ function rucaCategory(code) {
   return 'Unknown';
 }
 
-function calculateLaneDifficulty(pickupCategory, dropoffCategory) {
-  const p = (pickupCategory || '').trim();
-  const d = (dropoffCategory || '').trim();
+function laneDifficultyFromCategories(pickupCategory, dropoffCategory) {
+  const p = String(pickupCategory || '').trim();
+  const d = String(dropoffCategory || '').trim();
   if (!p || !d || p === 'Unknown' || d === 'Unknown') return 'Unknown';
   if (p === 'Very Remote' || d === 'Very Remote') return 'Very Hard';
   if (p === 'Rural' || d === 'Rural') return 'Hard';
@@ -57,7 +57,10 @@ function parseCookies(req) {
 }
 
 function signSession(username) {
-  const payload = JSON.stringify({ username, exp: Date.now() + 1000 * 60 * 60 * 12 });
+  const payload = JSON.stringify({
+    username,
+    exp: Date.now() + 1000 * 60 * 60 * 12
+  });
   const payloadBase64 = Buffer.from(payload).toString('base64url');
   const sig = crypto.createHmac('sha256', SESSION_SECRET).update(payloadBase64).digest('base64url');
   return `${payloadBase64}.${sig}`;
@@ -78,46 +81,10 @@ function verifySession(token) {
 }
 
 function requireAuth(req, res, next) {
-  const cookies = parseCookies(req);
-  const session = verifySession(cookies.auth_session);
+  const session = verifySession(parseCookies(req).auth_session);
   if (!session) return res.redirect('/login');
   req.user = session;
   next();
-}
-
-async function lookupZipDetails(zip) {
-  const cleanZip = String(zip || '').replace(/\D/g, '').slice(0, 5);
-  if (cleanZip.length !== 5) throw new Error('ZIP must be 5 digits');
-  const response = await fetch(`https://api.zippopotam.us/us/${cleanZip}`);
-  if (!response.ok) throw new Error('ZIP lookup failed');
-  const data = await response.json();
-  const place = data.places && data.places[0] ? data.places[0] : null;
-  if (!place) throw new Error('ZIP lookup returned no places');
-  return {
-    zip: cleanZip,
-    city: place['place name'] || '',
-    state: place['state abbreviation'] || '',
-    latitude: Number(place.latitude),
-    longitude: Number(place.longitude)
-  };
-}
-
-function haversineMiles(lat1, lon1, lat2, lon2) {
-  const R = 3958.8;
-  const toRad = (deg) => (deg * Math.PI) / 180;
-  const dLat = toRad(lat2 - lat1);
-  const dLon = toRad(lon2 - lon1);
-  const a =
-    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-    Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
-    Math.sin(dLon / 2) * Math.sin(dLon / 2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
-
-function estimateRoadMiles(fromZip, toZip) {
-  const crowMiles = haversineMiles(fromZip.latitude, fromZip.longitude, toZip.latitude, toZip.longitude);
-  return Math.max(1, Math.round(crowMiles * 1.18));
 }
 
 app.get('/login', (req, res) => {
@@ -135,10 +102,11 @@ app.post('/login', (req, res) => {
   if (username !== APP_USERNAME || password !== APP_PASSWORD) {
     return res.redirect('/login?error=1');
   }
+  const token = signSession(username);
   const isProduction = process.env.NODE_ENV === 'production';
   res.setHeader(
     'Set-Cookie',
-    `auth_session=${encodeURIComponent(signSession(username))}; HttpOnly; Path=/; SameSite=Lax; Max-Age=43200${isProduction ? '; Secure' : ''}`
+    `auth_session=${encodeURIComponent(token)}; HttpOnly; Path=/; SameSite=Lax; Max-Age=43200${isProduction ? '; Secure' : ''}`
   );
   res.redirect('/');
 });
@@ -152,52 +120,112 @@ app.post('/logout', (req, res) => {
   res.redirect('/login');
 });
 
-app.get('/health', (req, res) => res.type('text/plain').send('OK'));
-app.get('/', requireAuth, (req, res) => res.sendFile(path.join(__dirname, 'index.html')));
-app.get('/session', requireAuth, (req, res) => res.json({ authenticated: true, username: req.user.username }));
+app.get('/health', (req, res) => {
+  res.type('text/plain').send('OK');
+});
+
+app.get('/', requireAuth, (req, res) => {
+  res.sendFile(path.join(__dirname, 'index.html'));
+});
+
+app.get('/session', requireAuth, (req, res) => {
+  res.json({ authenticated: true, username: req.user.username });
+});
 
 app.get('/api/zip/:zip', requireAuth, async (req, res) => {
+  const zip = String(req.params.zip || '').replace(/\D/g, '').slice(0, 5);
+  if (zip.length !== 5) {
+    return res.status(400).json({ error: 'ZIP must be 5 digits.' });
+  }
   try {
-    const details = await lookupZipDetails(req.params.zip);
-    res.json(details);
+    const response = await fetch(`https://api.zippopotam.us/us/${zip}`);
+    if (!response.ok) {
+      return res.status(404).json({ error: 'ZIP not found.' });
+    }
+    const data = await response.json();
+    const place = data?.places?.[0];
+    if (!place) {
+      return res.status(404).json({ error: 'ZIP not found.' });
+    }
+    return res.json({
+      zip,
+      city: place['place name'] || '',
+      state: place['state abbreviation'] || '',
+      state_name: place.state || '',
+      latitude: Number(place.latitude),
+      longitude: Number(place.longitude)
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message || 'ZIP lookup failed' });
+    return res.status(500).json({ error: 'ZIP lookup failed.', details: err.message });
   }
 });
 
-app.get('/api/miles', requireAuth, async (req, res) => {
+app.get('/api/route-info', requireAuth, async (req, res) => {
+  const pickupZip = String(req.query.pickup_zip || '').replace(/\D/g, '').slice(0, 5);
+  const dropoffZip = String(req.query.dropoff_zip || '').replace(/\D/g, '').slice(0, 5);
+  if (pickupZip.length !== 5 || dropoffZip.length !== 5) {
+    return res.status(400).json({ error: 'pickup_zip and dropoff_zip must be 5 digits.' });
+  }
+
   try {
-    const fromZip = await lookupZipDetails(req.query.pickup_zip);
-    const toZip = await lookupZipDetails(req.query.delivery_zip);
-    res.json({ miles: estimateRoadMiles(fromZip, toZip), pickup: fromZip, delivery: toZip });
+    const [pickupResp, dropResp] = await Promise.all([
+      fetch(`https://api.zippopotam.us/us/${pickupZip}`),
+      fetch(`https://api.zippopotam.us/us/${dropoffZip}`)
+    ]);
+
+    if (!pickupResp.ok || !dropResp.ok) {
+      return res.status(404).json({ error: 'Could not look up one or both ZIP codes.' });
+    }
+
+    const pickupData = await pickupResp.json();
+    const dropData = await dropResp.json();
+    const p = pickupData?.places?.[0];
+    const d = dropData?.places?.[0];
+
+    const routeResp = await fetch(
+      `https://router.project-osrm.org/route/v1/driving/${Number(p.longitude)},${Number(p.latitude)};${Number(d.longitude)},${Number(d.latitude)}?overview=false`
+    );
+
+    if (!routeResp.ok) {
+      return res.status(502).json({ error: 'Driving distance lookup failed.' });
+    }
+
+    const routeData = await routeResp.json();
+    const route = routeData?.routes?.[0];
+    if (!route) {
+      return res.status(502).json({ error: 'No route found.' });
+    }
+
+    return res.json({
+      pickup_zip: pickupZip,
+      dropoff_zip: dropoffZip,
+      miles: Math.round((Number(route.distance || 0) / 1609.344) * 10) / 10,
+      hours: Math.round((Number(route.duration || 0) / 3600) * 10) / 10
+    });
   } catch (err) {
-    res.status(400).json({ error: err.message || 'Mileage lookup failed' });
+    return res.status(500).json({ error: 'Route lookup failed.', details: err.message });
   }
 });
 
 app.post('/quote', requireAuth, async (req, res) => {
   try {
     const { pickup, delivery, vehicles, trailer_type } = req.body || {};
+
     if (!pickup?.zip || !delivery?.zip) {
       return res.status(400).json({ error: 'Pickup ZIP and delivery ZIP are required.' });
     }
+
     if (!API_KEY) {
       return res.status(500).json({ error: 'Server misconfigured: SUPERDISPATCH_API_KEY is not set on the server.' });
     }
 
     const pickupZip = String(pickup.zip).trim();
     const dropZip = String(delivery.zip).trim();
+
     const pickupRuca = rucaData[pickupZip];
     const dropRuca = rucaData[dropZip];
     const pickupCategory = rucaCategory(pickupRuca);
     const dropoffCategory = rucaCategory(dropRuca);
-
-    let estimatedMiles = null;
-    try {
-      const pickupDetails = await lookupZipDetails(pickupZip);
-      const deliveryDetails = await lookupZipDetails(dropZip);
-      estimatedMiles = estimateRoadMiles(pickupDetails, deliveryDetails);
-    } catch (_) {}
 
     const sdResponse = await fetch(SUPERDISPATCH_URL, {
       method: 'POST',
@@ -222,7 +250,6 @@ app.post('/quote', requireAuth, async (req, res) => {
 
     return res.status(sdResponse.status).json({
       superdispatch: sdJson,
-      estimated_miles: estimatedMiles,
       pickup_access: {
         zip: pickupZip,
         ruca_code: pickupRuca ?? null,
@@ -233,13 +260,15 @@ app.post('/quote', requireAuth, async (req, res) => {
         ruca_code: dropRuca ?? null,
         ruca_category: dropoffCategory
       },
-      lane_difficulty: calculateLaneDifficulty(pickupCategory, dropoffCategory)
+      lane_difficulty: laneDifficultyFromCategories(pickupCategory, dropoffCategory)
     });
   } catch (err) {
     console.error('Quote route error:', err);
-    res.status(500).json({ error: 'Server error', details: err.message });
+    return res.status(500).json({ error: 'Server error', details: err.message });
   }
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => {
+  console.log(`Server running on port ${PORT}`);
+});
