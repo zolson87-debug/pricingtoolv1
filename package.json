@@ -1,7 +1,7 @@
 {
-  "name": "autosled-pricing-v3",
+  "name": "sdpricingv2-ruca",
   "version": "1.0.0",
-  "description": "Autosled pricing tool with login, Super Dispatch proxy, RUCA lookup, and dynamic customer price recommendation",
+  "description": "Super Dispatch pricing tool with RUCA lookup and login",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
