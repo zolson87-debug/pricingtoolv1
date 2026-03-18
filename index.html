@@ -6,33 +6,294 @@
   <title>Autosled Pricing Tool</title>
   <style>
     :root {
-      --bg:#f4f7fb; --card:#fff; --text:#122033; --muted:#66788a; --line:#d7e0ea;
-      --accent:#1d4ed8; --accent2:#0f766e; --danger:#b91c1c; --soft:#eef4ff;
+      --bg: #f4f7fb;
+      --card: #ffffff;
+      --text: #16212f;
+      --muted: #607083;
+      --line: #d6dfeb;
+      --accent: #1d4ed8;
+      --accent-2: #0f766e;
+      --danger: #b91c1c;
+      --danger-bg: #fef2f2;
+      --danger-line: #fecaca;
+      --ok-bg: #ecfeff;
+      --ok-line: #a5f3fc;
+      --shadow: 0 10px 28px rgba(15, 23, 42, 0.06);
     }
-    *{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
-    .topbar{background:#0f172a;color:#fff}.topbar-inner{max-width:1280px;margin:0 auto;padding:14px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px}
-    .topbar-title{font-weight:700}.topbar-right{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.85)}
-    .logout-btn{border:1px solid rgba(255,255,255,.2);background:transparent;color:#fff;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:700}
-    .wrap{max-width:1280px;margin:0 auto;padding:24px}.lead{color:var(--muted);margin:8px 0 24px}
-    .summary-grid,.metric-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
-    .layout{display:grid;grid-template-columns:1.45fr 1fr;gap:20px;margin-top:20px}
-    .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px;box-shadow:0 8px 24px rgba(0,0,0,.04)}
-    .card h2{margin:0 0 14px;font-size:18px}.section-label{margin:18px 0 10px;font-size:12px;font-weight:700;color:#4f46e5;text-transform:uppercase;letter-spacing:.06em}
-    .form-grid{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:12px}.span-12{grid-column:span 12}.span-6{grid-column:span 6}.span-4{grid-column:span 4}.span-3{grid-column:span 3}.span-2{grid-column:span 2}
-    label{display:block;font-size:13px;margin-bottom:6px;color:var(--muted);font-weight:700}
-    input,select,button,textarea{width:100%;border:1px solid var(--line);border-radius:12px;padding:12px;font-size:14px;background:#fff}
-    input[readonly],textarea[readonly]{background:#f8fafc;color:#334155}
-    button{cursor:pointer;font-weight:700}.primary{background:var(--accent);border-color:var(--accent);color:#fff}.secondary{background:#fff;color:var(--text)}
-    .action-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}.action-row button{width:auto;min-width:180px}
-    .summary-card,.metric{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfdff}.summary-label,.metric .label{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
-    .summary-value,.metric .value{font-size:24px;font-weight:700}.summary-sub{font-size:12px;color:var(--muted);margin-top:8px}
-    .status{margin-top:14px;padding:12px 14px;border-radius:10px;display:none}.status.error{display:block;background:#fef2f2;color:var(--danger);border:1px solid #fecaca}.status.ok{display:block;background:#ecfeff;color:var(--accent2);border:1px solid #a5f3fc}
-    .vehicle-card{border:1px solid var(--line);border-radius:14px;padding:14px;background:#fbfdff;margin-bottom:12px}.vehicle-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .checkbox-row{display:flex;align-items:center;gap:10px;height:100%;padding-top:28px}.checkbox-wrap{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:#fff;border-radius:12px;padding:12px 14px;width:100%}
-    .checkbox-wrap input{width:16px;height:16px;margin:0}.checkbox-wrap label{margin:0;color:var(--text);font-size:14px}
-    .mono{font-family:Consolas,Monaco,monospace;white-space:pre-wrap;word-break:break-word;font-size:12px;background:#0f172a;color:#e2e8f0;padding:14px;border-radius:12px;overflow:auto;min-height:180px}
-    .logic-list{margin:0;padding-left:18px}.logic-list li{margin-bottom:8px;line-height:1.4}.small{font-size:12px;color:var(--muted)}
-    @media (max-width:1000px){.layout,.summary-grid,.metric-grid{grid-template-columns:1fr 1fr}} @media (max-width:760px){.layout,.summary-grid,.metric-grid,.form-grid{grid-template-columns:1fr}.span-12,.span-6,.span-4,.span-3,.span-2{grid-column:span 1}.topbar-inner,.wrap{padding-left:16px;padding-right:16px}.action-row button{width:100%}}
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+    .topbar {
+      background: #0f172a;
+      color: #fff;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .topbar-inner {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 14px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .topbar-title { font-size: 17px; font-weight: 700; }
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: rgba(255,255,255,.84);
+      font-size: 14px;
+    }
+    .logout-btn {
+      border: 1px solid rgba(255,255,255,.2);
+      background: transparent;
+      color: white;
+      border-radius: 10px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .wrap {
+      max-width: 1340px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: 30px;
+    }
+    .lead {
+      margin: 0 0 22px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .tabs {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+    .tab-btn {
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--text);
+      border-radius: 12px;
+      padding: 12px 16px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .tab-btn.active {
+      background: #e8f0ff;
+      border-color: #b7cbff;
+      color: #143caa;
+    }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 18px;
+    }
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 18px;
+      box-shadow: var(--shadow);
+    }
+    .card h2, .card h3 {
+      margin: 0 0 14px;
+      font-size: 18px;
+    }
+    .section-title {
+      margin: 18px 0 10px;
+      color: #20418c;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+    }
+    .row {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .row.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .row.one { grid-template-columns: 1fr; }
+    label {
+      display: block;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    input, select, button, textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      padding: 12px;
+      font-size: 14px;
+      background: white;
+    }
+    input[readonly], textarea[readonly] {
+      background: #f8fafc;
+      color: #334155;
+    }
+    button.primary {
+      background: var(--accent);
+      color: white;
+      border: none;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.secondary {
+      background: #f8fafc;
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    button.ghost {
+      background: #fff;
+      color: var(--text);
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .status {
+      margin-top: 14px;
+      padding: 12px 14px;
+      border-radius: 11px;
+      display: none;
+    }
+    .status.error {
+      display: block;
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid var(--danger-line);
+    }
+    .status.ok {
+      display: block;
+      background: var(--ok-bg);
+      color: var(--accent-2);
+      border: 1px solid var(--ok-line);
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .metric {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fbfdff;
+    }
+    .metric .label {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+    .metric .value {
+      font-size: 24px;
+      font-weight: 700;
+    }
+    .metric .sub {
+      margin-top: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .vehicle-card,
+    .upcharge-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px;
+      background: #fbfdff;
+      margin-bottom: 12px;
+    }
+    .vehicle-head,
+    .upcharge-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .small-btn {
+      width: auto;
+      padding: 8px 12px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    .pill {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      color: #274690;
+    }
+    .mono {
+      font-family: Consolas, Monaco, monospace;
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 12px;
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 14px;
+      border-radius: 12px;
+      overflow: auto;
+      min-height: 160px;
+    }
+    .logic-box {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 14px 16px;
+      background: #fbfdff;
+    }
+    .logic-box ol {
+      margin: 0;
+      padding-left: 18px;
+    }
+    .logic-box li {
+      margin-bottom: 10px;
+      line-height: 1.45;
+    }
+    .help {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 6px;
+      line-height: 1.4;
+    }
+    .settings-note {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+    .inline-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    @media (max-width: 1100px) {
+      .grid, .summary-grid, .inline-stats, .row, .row.three, .row.four {
+        grid-template-columns: 1fr;
+      }
+      .topbar-inner, .wrap { padding-left: 16px; padding-right: 16px; }
+    }
   </style>
 </head>
 <body>
@@ -49,319 +310,817 @@
   </div>
 
   <div class="wrap">
-    <h1>Customer Quote Recommendation</h1>
-    <p class="lead">Pull Super Dispatch pricing, compare it to your own cost inputs, auto-calculate mileage for the margin curve, and show the exact logic used.</p>
+    <h1>Pricing Tool V1</h1>
+    <p class="lead">Weighted transporter cost, RUCA-based lane difficulty, percentage upcharges, flat-dollar upcharges, and a recommended customer quote from one screen.</p>
 
-    <div class="summary-grid">
-      <div class="summary-card"><div class="summary-label">Est Carrier Cost</div><div id="sumCarrier" class="summary-value">—</div><div class="summary-sub">Base cost used in the calculation</div></div>
-      <div class="summary-card"><div class="summary-label">Recommended Customer Price</div><div id="sumCustomer" class="summary-value">—</div><div class="summary-sub">Exact quote or price range</div></div>
-      <div class="summary-card"><div class="summary-label">Gross Margin Dollars</div><div id="sumMarginDollars" class="summary-value">—</div><div class="summary-sub">Customer price minus est carrier cost</div></div>
-      <div class="summary-card"><div class="summary-label">Gross Margin %</div><div id="sumMarginPct" class="summary-value">—</div><div class="summary-sub">Margin after formula and surcharges</div></div>
+    <div class="tabs">
+      <button type="button" class="tab-btn active" data-tab="quoteTab">Quote Calculator</button>
+      <button type="button" class="tab-btn" data-tab="settingsTab">Upcharge Settings</button>
     </div>
 
-    <div class="layout">
-      <div class="card">
-        <h2>Quote Inputs</h2>
-        <div class="section-label">Lane</div>
-        <div class="form-grid">
-          <div class="span-3"><label for="pickupZip">Pickup ZIP</label><input id="pickupZip" maxlength="5" inputmode="numeric" placeholder="60638"></div>
-          <div class="span-3"><label for="pickupCity">Pickup City</label><input id="pickupCity" readonly></div>
-          <div class="span-2"><label for="pickupState">Pickup State</label><input id="pickupState" readonly></div>
-          <div class="span-4 checkbox-row"><div class="checkbox-wrap"><input id="pickupAuction" type="checkbox"><label for="pickupAuction">Pickup is auction</label></div></div>
-
-          <div class="span-3"><label for="deliveryZip">Dropoff ZIP</label><input id="deliveryZip" maxlength="5" inputmode="numeric" placeholder="75050"></div>
-          <div class="span-3"><label for="deliveryCity">Dropoff City</label><input id="deliveryCity" readonly></div>
-          <div class="span-2"><label for="deliveryState">Dropoff State</label><input id="deliveryState" readonly></div>
-          <div class="span-4 checkbox-row"><div class="checkbox-wrap"><input id="deliveryAuction" type="checkbox"><label for="deliveryAuction">Dropoff is auction</label></div></div>
+    <div id="quoteTab" class="tab-panel active">
+      <div class="summary-grid">
+        <div class="metric">
+          <div class="label">Estimated Transporter Cost</div>
+          <div class="value" id="summaryTransporterCost">—</div>
+          <div class="sub">Weighted estimate before upcharges</div>
         </div>
-
-        <div class="section-label">Quote Settings</div>
-        <div class="form-grid">
-          <div class="span-3"><label for="quoteMode">Result Type</label><select id="quoteMode"><option value="exact">Exact Quote</option><option value="range">Price Range</option></select></div>
-          <div class="span-3"><label for="trailerType">Trailer Type</label><select id="trailerType"><option value="open">Open</option><option value="enclosed">Enclosed</option></select></div>
-          <div class="span-3"><label for="miles">Estimated Miles</label><input id="miles" readonly placeholder="Auto-populates from ZIPs"></div>
-          <div class="span-3"><label for="marginFloor">Margin Floor</label><select id="marginFloor"><option value="12">12%</option><option value="13">13%</option><option value="14" selected>14%</option><option value="15">15%</option></select></div>
+        <div class="metric">
+          <div class="label">Adjusted Transporter Cost</div>
+          <div class="value" id="summaryAdjustedCost">—</div>
+          <div class="sub">After percentage and flat-dollar upcharges</div>
         </div>
-
-        <div class="section-label">Carrier Cost Inputs</div>
-        <div class="form-grid">
-          <div class="span-4"><label for="sdPrice">Super Dispatch Price</label><input id="sdPrice" type="number" step="0.01" min="0" placeholder="Pulled from API"></div>
-          <div class="span-4"><label for="historicalPrice">Autosled Historical</label><input id="historicalPrice" type="number" step="0.01" min="0" placeholder="Manual input"></div>
-          <div class="span-4"><label for="centralPrice">CentralDispatch</label><input id="centralPrice" type="number" step="0.01" min="0" placeholder="Manual input"></div>
+        <div class="metric">
+          <div class="label">Recommended Customer Price</div>
+          <div class="value" id="summaryCustomerPrice">—</div>
+          <div class="sub">Using the mileage margin curve</div>
         </div>
-
-        <div class="section-label">Vehicles</div>
-        <div id="vehicles"></div>
-        <div class="action-row"><button id="addVehicleBtn" type="button" class="secondary">Add Another Vehicle</button></div>
-
-        <div class="action-row">
-          <button id="getQuoteBtn" type="button" class="primary">Get Super Dispatch Price</button>
-          <button id="calcBtn" type="button" class="primary">Calculate Recommended Customer Price</button>
+        <div class="metric">
+          <div class="label">Gross Margin</div>
+          <div class="value" id="summaryMargin">—</div>
+          <div class="sub" id="summaryMarginSub">Margin dollars and %</div>
         </div>
-        <div id="status" class="status"></div>
       </div>
 
-      <div>
-        <div class="card" style="margin-bottom:20px;">
-          <h2>Super Dispatch Results</h2>
-          <div class="metric-grid">
-            <div class="metric"><div class="label">Price</div><div id="sdMetricPrice" class="value">—</div></div>
-            <div class="metric"><div class="label">Price / Mile</div><div id="sdMetricPPM" class="value">—</div></div>
-            <div class="metric"><div class="label">Confidence</div><div id="sdMetricConfidence" class="value">—</div></div>
-            <div class="metric"><div class="label">Lane Difficulty</div><div id="sdMetricLane" class="value">—</div></div>
-          </div>
-          <div class="form-grid" style="margin-top:14px;">
-            <div class="span-6"><label>Pickup RUCA / Category</label><input id="pickupRucaInfo" readonly></div>
-            <div class="span-6"><label>Dropoff RUCA / Category</label><input id="dropoffRucaInfo" readonly></div>
-          </div>
-          <div style="margin-top:12px;"><label for="rawResponse">Raw Response</label><div id="rawResponse" class="mono">No quote yet.</div></div>
+      <div class="grid">
+        <div class="card">
+          <h2>Quote Inputs</h2>
+          <form id="quoteForm">
+            <div class="section-title">Lane</div>
+            <div class="row">
+              <div>
+                <label for="pickupZip">Pickup ZIP</label>
+                <input id="pickupZip" maxlength="5" inputmode="numeric" required />
+              </div>
+              <div>
+                <label for="deliveryZip">Dropoff ZIP</label>
+                <input id="deliveryZip" maxlength="5" inputmode="numeric" required />
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="pickupCity">Pickup City</label>
+                <input id="pickupCity" readonly />
+              </div>
+              <div>
+                <label for="pickupState">Pickup State</label>
+                <input id="pickupState" readonly />
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <label for="deliveryCity">Dropoff City</label>
+                <input id="deliveryCity" readonly />
+              </div>
+              <div>
+                <label for="deliveryState">Dropoff State</label>
+                <input id="deliveryState" readonly />
+              </div>
+            </div>
+            <div class="row four">
+              <div>
+                <label for="routeMiles">Auto Route Miles</label>
+                <input id="routeMiles" readonly />
+              </div>
+              <div>
+                <label for="routeHours">Auto Route Hours</label>
+                <input id="routeHours" readonly />
+              </div>
+              <div>
+                <label for="pickupCategory">Pickup RUCA Category</label>
+                <input id="pickupCategory" readonly />
+              </div>
+              <div>
+                <label for="dropoffCategory">Dropoff RUCA Category</label>
+                <input id="dropoffCategory" readonly />
+              </div>
+            </div>
+            <div class="row three">
+              <div>
+                <label for="pickupRuca">Pickup RUCA Code</label>
+                <input id="pickupRuca" readonly />
+              </div>
+              <div>
+                <label for="dropoffRuca">Dropoff RUCA Code</label>
+                <input id="dropoffRuca" readonly />
+              </div>
+              <div>
+                <label for="laneDifficulty">Lane Difficulty</label>
+                <input id="laneDifficulty" readonly />
+              </div>
+            </div>
+
+            <div class="section-title">Pricing Inputs</div>
+            <div class="row three">
+              <div>
+                <label for="historicalPrice">Autosled Historical Price</label>
+                <input id="historicalPrice" type="number" step="0.01" min="0" placeholder="1000" />
+              </div>
+              <div>
+                <label for="centralDispatchPrice">Central Dispatch Price</label>
+                <input id="centralDispatchPrice" type="number" step="0.01" min="0" placeholder="1100" />
+              </div>
+              <div>
+                <label for="superDispatchPrice">SuperDispatch Price</label>
+                <input id="superDispatchPrice" type="number" step="0.01" min="0" placeholder="Auto-filled" />
+              </div>
+            </div>
+            <div class="row three">
+              <div>
+                <label for="marginFloor">Margin Floor</label>
+                <select id="marginFloor">
+                  <option value="12">12%</option>
+                  <option value="13">13%</option>
+                  <option value="14" selected>14%</option>
+                  <option value="15">15%</option>
+                </select>
+              </div>
+              <div>
+                <label for="computedMarginPct">Applied Margin %</label>
+                <input id="computedMarginPct" readonly />
+              </div>
+              <div>
+                <label for="trailerType">Trailer Type</label>
+                <select id="trailerType">
+                  <option value="open">Open</option>
+                  <option value="enclosed">Enclosed</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="section-title">Vehicles</div>
+            <div id="vehiclesContainer"></div>
+            <div class="row one">
+              <div>
+                <button type="button" class="secondary" id="addVehicleBtn">Add Another Vehicle</button>
+              </div>
+            </div>
+
+            <div class="section-title">Active Upcharges</div>
+            <div id="activeUpchargesContainer"></div>
+
+            <div class="row three">
+              <div>
+                <button type="button" class="primary" id="lookupLaneBtn">Lookup ZIP / Miles / RUCA</button>
+              </div>
+              <div>
+                <button type="button" class="primary" id="getQuoteBtn">Get SuperDispatch Quote</button>
+              </div>
+              <div>
+                <button type="submit" class="primary">Calculate Recommended Price</button>
+              </div>
+            </div>
+            <div class="row one">
+              <div>
+                <button type="button" class="ghost" id="resetBtn">Reset Quote Screen</button>
+              </div>
+            </div>
+          </form>
+          <div id="status" class="status"></div>
         </div>
 
-        <div class="card">
-          <h2>Logic Steps</h2>
-          <ol id="logic" class="logic-list"><li>Enter pickup and dropoff ZIP codes.</li><li>Get the Super Dispatch price, then calculate the recommended customer price.</li></ol>
+        <div>
+          <div class="card" style="margin-bottom:18px;">
+            <h2>SuperDispatch Results</h2>
+            <div class="inline-stats">
+              <div class="metric">
+                <div class="label">Price</div>
+                <div id="sdPriceMetric" class="value">—</div>
+              </div>
+              <div class="metric">
+                <div class="label">Price / Mile</div>
+                <div id="sdPricePerMile" class="value">—</div>
+              </div>
+              <div class="metric">
+                <div class="label">Confidence</div>
+                <div id="sdConfidence" class="value">—</div>
+              </div>
+            </div>
+            <div class="help">The raw SuperDispatch response is shown below for validation and troubleshooting.</div>
+            <div id="rawResponse" class="mono" style="margin-top:12px;">No quote yet.</div>
+          </div>
+
+          <div class="card" style="margin-bottom:18px;">
+            <h2>Pricing Logic</h2>
+            <div class="logic-box">
+              <ol id="logicSteps">
+                <li>Enter lane details, transporter prices, and any active upcharges.</li>
+                <li>Run the calculation to generate the weighted transporter estimate and customer price.</li>
+              </ol>
+            </div>
+          </div>
+
+          <div class="card">
+            <h2>Upcharge Totals</h2>
+            <div class="row three">
+              <div>
+                <label for="totalPercentUpcharge">Total % Upcharge</label>
+                <input id="totalPercentUpcharge" readonly />
+              </div>
+              <div>
+                <label for="totalFlatUpcharge">Total Flat $ Upcharge</label>
+                <input id="totalFlatUpcharge" readonly />
+              </div>
+              <div>
+                <label for="appliedLaneRule">Lane Rule Applied</label>
+                <input id="appliedLaneRule" readonly />
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <div id="settingsTab" class="tab-panel">
+      <div class="card">
+        <h2>Upcharge Settings</h2>
+        <p class="settings-note">Set the default percentage and flat-dollar upcharges used on the quote screen. Lane difficulty defaults are applied automatically from the RUCA lane classification. Settings are saved in your browser on this device.</p>
+        <div id="settingsContainer"></div>
+        <div class="row three">
+          <div><button type="button" class="primary" id="saveSettingsBtn">Save Settings</button></div>
+          <div><button type="button" class="ghost" id="resetSettingsBtn">Reset to Defaults</button></div>
+          <div><button type="button" class="secondary" id="copyLaneDefaultsBtn">Copy Lane Defaults to Quote</button></div>
+        </div>
+        <div id="settingsStatus" class="status"></div>
       </div>
     </div>
   </div>
 
-<script>
-(() => {
-  const $ = (id) => document.getElementById(id);
-  const statusEl = $('status');
-  const vehiclesEl = $('vehicles');
-  let vehicleCount = 0;
-  let lastQuoteData = null;
+  <script>
+    const $ = (id) => document.getElementById(id);
 
-  const money = (n) => (n === null || n === undefined || n === '' || Number.isNaN(Number(n)) ? '—' : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(Number(n)));
-  const money2 = (n) => (n === null || n === undefined || n === '' || Number.isNaN(Number(n)) ? '—' : new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 2 }).format(Number(n)));
-  const pct = (n) => (n === null || n === undefined || Number.isNaN(Number(n)) ? '—' : `${(Number(n) * 100).toFixed(1)}%`);
-  const num = (id) => { const v = String($(id).value || '').trim(); return v === '' ? null : Number(v); };
+    const DEFAULT_SETTINGS = [
+      { key: 'lane_easy', label: 'Lane Difficulty: Easy', percent: 0, flat: 0, autoRule: 'Easy' },
+      { key: 'lane_standard', label: 'Lane Difficulty: Standard', percent: 2, flat: 0, autoRule: 'Standard' },
+      { key: 'lane_hard', label: 'Lane Difficulty: Hard', percent: 6, flat: 100, autoRule: 'Hard' },
+      { key: 'lane_very_hard', label: 'Lane Difficulty: Very Hard', percent: 10, flat: 150, autoRule: 'Very Hard' },
+      { key: 'high_curb_weight', label: 'High Curb Weight', percent: 4, flat: 0 },
+      { key: 'high_msrp', label: 'High MSRP', percent: 3, flat: 0 },
+      { key: 'inop', label: 'Inoperable Vehicle', percent: 8, flat: 150 },
+      { key: 'low_ground_clearance', label: 'Low to Ground Vehicle', percent: 4, flat: 75 },
+      { key: 'rush_service', label: 'Rush Service Required', percent: 5, flat: 100 },
+      { key: 'auction_pickup', label: 'Auction Pickup', percent: 1, flat: 25 },
+      { key: 'auction_delivery', label: 'Auction Delivery', percent: 1, flat: 25 },
+      { key: 'enclosed', label: 'Enclosed Trailer Requirement', percent: 12, flat: 0 },
+      { key: 'manual_override', label: 'Manual Override / Other', percent: 0, flat: 0 }
+    ];
 
-  function setStatus(message, type='ok') { statusEl.className = `status ${type}`; statusEl.textContent = message; }
-  function clearStatus() { statusEl.className = 'status'; statusEl.textContent = ''; }
+    function getStoredSettings() {
+      try {
+        const raw = localStorage.getItem('pricingtoolv1_upcharge_settings');
+        if (!raw) return structuredClone(DEFAULT_SETTINGS);
+        const parsed = JSON.parse(raw);
+        return DEFAULT_SETTINGS.map(def => {
+          const match = parsed.find(x => x.key === def.key) || {};
+          return { ...def, percent: Number(match.percent ?? def.percent), flat: Number(match.flat ?? def.flat) };
+        });
+      } catch {
+        return structuredClone(DEFAULT_SETTINGS);
+      }
+    }
 
-  async function loadSession() {
-    try {
-      const res = await fetch('/session');
-      if (!res.ok) return;
-      const data = await res.json();
-      if (data && data.username) $('userDisplay').textContent = `Signed in as ${data.username}`;
-    } catch (_) {}
-  }
+    let upchargeSettings = getStoredSettings();
 
-  function createVehicleCard(data = {}) {
-    vehicleCount += 1;
-    const idx = vehicleCount;
-    const card = document.createElement('div');
-    card.className = 'vehicle-card';
-    card.innerHTML = `
-      <div class="vehicle-head">
-        <strong>Vehicle ${idx}</strong>
-        ${idx === 1 ? '<span class="small">At least one vehicle is required</span>' : `<button type="button" class="secondary remove-btn">Remove</button>`}
-      </div>
-      <div class="form-grid">
-        <div class="span-3"><label>Vehicle Type</label>
-          <select class="vehicleType">
-            <option value="sedan">Sedan</option><option value="suv">SUV</option><option value="pickup">Pickup</option>
-            <option value="van">Van</option><option value="coupe">Coupe</option><option value="wagon">Wagon</option><option value="other">Other</option>
-          </select>
+    function saveStoredSettings(settings) {
+      localStorage.setItem('pricingtoolv1_upcharge_settings', JSON.stringify(settings));
+      upchargeSettings = settings;
+    }
+
+    function structuredClone(obj) { return JSON.parse(JSON.stringify(obj)); }
+
+    function formatMoney(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return '—';
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
+    }
+
+    function formatMoney2(value) {
+      const n = Number(value);
+      if (!Number.isFinite(n)) return '—';
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+    }
+
+    function formatPct(n) {
+      const num = Number(n);
+      if (!Number.isFinite(num)) return '—';
+      return `${num.toFixed(1)}%`;
+    }
+
+    async function loadSession() {
+      try {
+        const response = await fetch('/session');
+        if (!response.ok) return;
+        const data = await response.json();
+        if (data?.username) $('userDisplay').textContent = `Signed in as ${data.username}`;
+      } catch (_) {}
+    }
+
+    function setStatus(message, type = 'ok') {
+      const el = $('status');
+      el.className = `status ${type}`;
+      el.textContent = message;
+    }
+    function clearStatus() {
+      const el = $('status');
+      el.className = 'status';
+      el.textContent = '';
+    }
+    function setSettingsStatus(message, type = 'ok') {
+      const el = $('settingsStatus');
+      el.className = `status ${type}`;
+      el.textContent = message;
+    }
+
+    function wireTabs() {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+          btn.classList.add('active');
+          $(btn.dataset.tab).classList.add('active');
+        });
+      });
+    }
+
+    function buildSettingsUI() {
+      const container = $('settingsContainer');
+      container.innerHTML = '';
+      upchargeSettings.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'upcharge-card';
+        card.innerHTML = `
+          <div class="upcharge-head">
+            <strong>${item.label}</strong>
+            ${item.autoRule ? `<span class="pill">Auto-applies when lane is ${item.autoRule}</span>` : ''}
+          </div>
+          <div class="row">
+            <div>
+              <label>Percent Upcharge</label>
+              <input type="number" step="0.1" data-settings-percent="${item.key}" value="${item.percent}" />
+            </div>
+            <div>
+              <label>Flat-Dollar Upcharge</label>
+              <input type="number" step="0.01" data-settings-flat="${item.key}" value="${item.flat}" />
+            </div>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function buildVehiclesUI() {
+      const container = $('vehiclesContainer');
+      container.innerHTML = '';
+      addVehicleCard();
+    }
+
+    function addVehicleCard(data = {}) {
+      const container = $('vehiclesContainer');
+      const idx = container.children.length + 1;
+      const card = document.createElement('div');
+      card.className = 'vehicle-card';
+      card.innerHTML = `
+        <div class="vehicle-head">
+          <strong>Vehicle ${idx}</strong>
+          ${idx > 1 ? '<button type="button" class="small-btn ghost remove-vehicle-btn">Remove</button>' : ''}
         </div>
-        <div class="span-3"><label>Operable Status</label>
-          <select class="operableStatus"><option value="false">Operable</option><option value="true">Inoperable</option></select>
+        <div class="row four">
+          <div>
+            <label>Vehicle Type</label>
+            <select class="vehicle-type">
+              <option value="sedan">Sedan</option>
+              <option value="suv">SUV</option>
+              <option value="pickup">Pickup</option>
+              <option value="van">Van</option>
+              <option value="coupe">Coupe</option>
+              <option value="wagon">Wagon</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div>
+            <label>Operability</label>
+            <select class="vehicle-inop">
+              <option value="false">Operable</option>
+              <option value="true">Inoperable</option>
+            </select>
+          </div>
+          <div>
+            <label>Make</label>
+            <input class="vehicle-make" placeholder="Toyota" />
+          </div>
+          <div>
+            <label>Model</label>
+            <input class="vehicle-model" placeholder="Camry" />
+          </div>
         </div>
-        <div class="span-2"><label>Year</label><input class="year" type="number" inputmode="numeric" placeholder="2023"></div>
-        <div class="span-2"><label>Make</label><input class="make" placeholder="Toyota"></div>
-        <div class="span-2"><label>Model</label><input class="model" placeholder="Camry"></div>
-      </div>`;
-    if (idx > 1) {
-      card.querySelector('.remove-btn').addEventListener('click', () => card.remove());
-    }
-    card.querySelector('.vehicleType').value = data.type || 'sedan';
-    card.querySelector('.operableStatus').value = String(data.is_inoperable || false);
-    card.querySelector('.year').value = data.year || '';
-    card.querySelector('.make').value = data.make || '';
-    card.querySelector('.model').value = data.model || '';
-    vehiclesEl.appendChild(card);
-  }
-
-  function gatherVehicles() {
-    return Array.from(vehiclesEl.querySelectorAll('.vehicle-card')).map((card) => {
-      const year = card.querySelector('.year').value.trim();
-      const vehicle = {
-        type: card.querySelector('.vehicleType').value,
-        is_inoperable: card.querySelector('.operableStatus').value === 'true',
-        make: card.querySelector('.make').value.trim(),
-        model: card.querySelector('.model').value.trim()
-      };
-      if (year) vehicle.year = parseInt(year, 10);
-      return vehicle;
-    });
-  }
-
-  async function populateZip(prefix, zip) {
-    const cleanZip = String(zip || '').replace(/\D/g, '').slice(0, 5);
-    if (cleanZip.length !== 5) {
-      $(`${prefix}City`).value = '';
-      $(`${prefix}State`).value = '';
-      if (prefix === 'pickup') $('miles').value = '';
-      if (prefix === 'delivery') $('miles').value = '';
-      return;
-    }
-    try {
-      const res = await fetch(`/api/zip/${cleanZip}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'ZIP lookup failed');
-      $(`${prefix}City`).value = data.city || '';
-      $(`${prefix}State`).value = data.state || '';
-      await maybePopulateMiles();
-    } catch (_) {
-      $(`${prefix}City`).value = '';
-      $(`${prefix}State`).value = '';
-    }
-  }
-
-  async function maybePopulateMiles() {
-    const pickupZip = $('pickupZip').value.trim();
-    const deliveryZip = $('deliveryZip').value.trim();
-    if (pickupZip.length !== 5 || deliveryZip.length !== 5) return;
-    try {
-      const res = await fetch(`/api/miles?pickup_zip=${encodeURIComponent(pickupZip)}&delivery_zip=${encodeURIComponent(deliveryZip)}`);
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Mileage lookup failed');
-      $('miles').value = data.miles || '';
-      if (!$('pickupCity').value) $('pickupCity').value = data.pickup?.city || '';
-      if (!$('pickupState').value) $('pickupState').value = data.pickup?.state || '';
-      if (!$('deliveryCity').value) $('deliveryCity').value = data.delivery?.city || '';
-      if (!$('deliveryState').value) $('deliveryState').value = data.delivery?.state || '';
-    } catch (_) {}
-  }
-
-  function computeMarginPct(miles, floorPct) {
-    const rawPctPoints = 30 - (Number(miles) * 0.008);
-    return Math.max(Number(floorPct), rawPctPoints) / 100;
-  }
-  function laneSurcharge(lane) { return lane === 'Hard' ? 100 : lane === 'Very Hard' ? 150 : 0; }
-  function avg(vals) { return vals.reduce((a,b) => a+b, 0) / vals.length; }
-  function roundDollar(n) { return Math.round(Number(n || 0)); }
-
-  async function getSuperDispatchPrice() {
-    clearStatus();
-    const pickupZip = $('pickupZip').value.trim();
-    const deliveryZip = $('deliveryZip').value.trim();
-    if (pickupZip.length !== 5 || deliveryZip.length !== 5) {
-      setStatus('Please enter both 5-digit ZIP codes.', 'error');
-      return;
-    }
-    await populateZip('pickup', pickupZip);
-    await populateZip('delivery', deliveryZip);
-
-    const payload = {
-      pickup: { city: $('pickupCity').value.trim(), state: $('pickupState').value.trim(), zip: pickupZip },
-      delivery: { city: $('deliveryCity').value.trim(), state: $('deliveryState').value.trim(), zip: deliveryZip },
-      trailer_type: $('trailerType').value,
-      vehicles: gatherVehicles()
-    };
-
-    try {
-      setStatus('Requesting Super Dispatch price...', 'ok');
-      const response = await fetch('/quote', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-      const text = await response.text();
-      let data;
-      try { data = JSON.parse(text); } catch (_) { $('rawResponse').textContent = text; throw new Error('Server returned non-JSON response.'); }
-      $('rawResponse').textContent = JSON.stringify(data, null, 2);
-      if (!response.ok) throw new Error(data.error || 'Quote request failed.');
-
-      lastQuoteData = data;
-      const pricing = data?.superdispatch?.data || {};
-      $('sdPrice').value = pricing.price ?? '';
-      $('sdMetricPrice').textContent = money(pricing.price);
-      $('sdMetricPPM').textContent = pricing.price_per_mile ?? '—';
-      $('sdMetricConfidence').textContent = pricing.confidence ?? '—';
-      $('sdMetricLane').textContent = data.lane_difficulty || '—';
-      $('pickupRucaInfo').value = `${data?.pickup_access?.ruca_code ?? 'Unknown'} / ${data?.pickup_access?.ruca_category ?? 'Unknown'}`;
-      $('dropoffRucaInfo').value = `${data?.dropoff_access?.ruca_code ?? 'Unknown'} / ${data?.dropoff_access?.ruca_category ?? 'Unknown'}`;
-      if (data.estimated_miles) $('miles').value = data.estimated_miles;
-      setStatus('Super Dispatch price loaded successfully.', 'ok');
-    } catch (error) {
-      setStatus(error.message || 'Quote request failed.', 'error');
-    }
-  }
-
-  function calculateRecommendation() {
-    clearStatus();
-    const miles = Number($('miles').value || 0);
-    if (!miles) { setStatus('Miles have not populated yet. Enter both ZIP codes first.', 'error'); return; }
-
-    const comps = [
-      { name: 'Super Dispatch', value: num('sdPrice') },
-      { name: 'Autosled Historical', value: num('historicalPrice') },
-      { name: 'CentralDispatch', value: num('centralPrice') }
-    ].filter(x => x.value !== null && !Number.isNaN(x.value) && x.value > 0).sort((a,b)=>a.value-b.value);
-
-    if (!comps.length) { setStatus('Enter at least one carrier cost. Pulling Super Dispatch price counts as one.', 'error'); return; }
-
-    const floorPct = Number($('marginFloor').value);
-    const marginPct = computeMarginPct(miles, floorPct);
-    const isAuction = $('pickupAuction').checked || $('deliveryAuction').checked;
-    const laneDifficulty = lastQuoteData?.lane_difficulty || 'Unknown';
-    const surcharge = laneSurcharge(laneDifficulty);
-    const values = comps.map(c => c.value);
-    const lowest = values[0];
-    const highest = values[values.length - 1];
-    const avgTwoLowest = values.length >= 2 ? avg(values.slice(0, 2)) : lowest;
-    const mode = $('quoteMode').value;
-    const logic = [];
-
-    logic.push(`Carrier costs considered: ${comps.map(c => `${c.name} ${money2(c.value)}`).join(', ')}.`);
-    logic.push(`Estimated miles used for margin curve: ${miles.toLocaleString()}.`);
-    logic.push(`Margin formula: 30% - (${miles.toLocaleString()} × 0.008%) = ${(30 - miles * 0.008).toFixed(2)}% raw margin.`);
-    logic.push(`Selected floor: ${floorPct}%. Applied margin: ${(marginPct * 100).toFixed(2)}%.`);
-    logic.push(`Lane difficulty: ${laneDifficulty}. Surcharge added: ${money(surcharge)}.`);
-
-    if (mode === 'exact') {
-      const base = isAuction ? avgTwoLowest : highest;
-      logic.push(isAuction ? `Auction was selected, so exact quote base cost = average of the 2 lowest carrier costs = ${money2(base)}.` : `No auction selected, so exact quote base cost = highest carrier cost = ${money2(base)}.`);
-      const beforeSurcharge = base / (1 - marginPct);
-      const customer = roundDollar(beforeSurcharge + surcharge);
-      const gmDollars = customer - base;
-      const gmPct = gmDollars / customer;
-      logic.push(`Recommended customer price before surcharge = ${money2(base)} ÷ (1 - ${(marginPct * 100).toFixed(2)}%) = ${money2(beforeSurcharge)}.`);
-      logic.push(`Final recommended customer price = ${money2(beforeSurcharge)} + ${money(surcharge)} = ${money(customer)}.`);
-      $('sumCarrier').textContent = money(base);
-      $('sumCustomer').textContent = money(customer);
-      $('sumMarginDollars').textContent = money(gmDollars);
-      $('sumMarginPct').textContent = pct(gmPct);
-    } else {
-      const lowBase = lowest;
-      const highBase = isAuction ? avgTwoLowest : highest;
-      logic.push(isAuction ? `Auction was selected, so range low base = ${money2(lowBase)} and high base = average of the 2 lowest carrier costs = ${money2(highBase)}.` : `No auction selected, so range low base = ${money2(lowBase)} and high base = ${money2(highBase)}.`);
-      const lowCustomer = roundDollar((lowBase / (1 - marginPct)) + surcharge);
-      const highCustomer = roundDollar((highBase / (1 - marginPct)) + surcharge);
-      const lowGM = lowCustomer - lowBase;
-      const highGM = highCustomer - highBase;
-      const lowPct = lowGM / lowCustomer;
-      const highPct = highGM / highCustomer;
-      logic.push(`Low end customer price = ${money(lowCustomer)}. High end customer price = ${money(highCustomer)}.`);
-      $('sumCarrier').textContent = `${money(lowBase)} – ${money(highBase)}`;
-      $('sumCustomer').textContent = `${money(lowCustomer)} – ${money(highCustomer)}`;
-      $('sumMarginDollars').textContent = `${money(lowGM)} – ${money(highGM)}`;
-      $('sumMarginPct').textContent = `${pct(lowPct)} – ${pct(highPct)}`;
+        <div class="row">
+          <div>
+            <label>Year</label>
+            <input class="vehicle-year" type="number" inputmode="numeric" placeholder="2023" />
+          </div>
+          <div>
+            <label>Notes</label>
+            <input class="vehicle-note" placeholder="Optional internal note" />
+          </div>
+        </div>
+      `;
+      container.appendChild(card);
+      card.querySelector('.vehicle-type').value = data.type || 'sedan';
+      card.querySelector('.vehicle-inop').value = String(data.is_inoperable ?? false);
+      card.querySelector('.vehicle-make').value = data.make || '';
+      card.querySelector('.vehicle-model').value = data.model || '';
+      card.querySelector('.vehicle-year').value = data.year || '';
+      card.querySelector('.vehicle-note').value = data.note || '';
+      const removeBtn = card.querySelector('.remove-vehicle-btn');
+      if (removeBtn) {
+        removeBtn.addEventListener('click', () => {
+          card.remove();
+          refreshVehicleLabels();
+        });
+      }
+      renderActiveUpcharges();
     }
 
-    $('logic').innerHTML = logic.map(item => `<li>${item}</li>`).join('');
-    setStatus('Recommended customer price calculated.', 'ok');
-  }
+    function refreshVehicleLabels() {
+      [...$('vehiclesContainer').children].forEach((card, idx) => {
+        const title = card.querySelector('.vehicle-head strong');
+        if (title) title.textContent = `Vehicle ${idx + 1}`;
+      });
+    }
 
-  $('pickupZip').addEventListener('input', (e) => populateZip('pickup', e.target.value));
-  $('deliveryZip').addEventListener('input', (e) => populateZip('delivery', e.target.value));
-  $('addVehicleBtn').addEventListener('click', () => createVehicleCard());
-  $('getQuoteBtn').addEventListener('click', getSuperDispatchPrice);
-  $('calcBtn').addEventListener('click', calculateRecommendation);
+    function getVehicles() {
+      return [...document.querySelectorAll('.vehicle-card')].map(card => {
+        const yearRaw = card.querySelector('.vehicle-year').value.trim();
+        const out = {
+          type: card.querySelector('.vehicle-type').value,
+          is_inoperable: card.querySelector('.vehicle-inop').value === 'true',
+          make: card.querySelector('.vehicle-make').value.trim(),
+          model: card.querySelector('.vehicle-model').value.trim(),
+          note: card.querySelector('.vehicle-note').value.trim()
+        };
+        if (yearRaw) out.year = parseInt(yearRaw, 10);
+        return out;
+      });
+    }
 
-  createVehicleCard();
-  loadSession();
-})();
-</script>
+    function buildActiveUpchargesUI() {
+      const container = $('activeUpchargesContainer');
+      container.innerHTML = '';
+      upchargeSettings.forEach(item => {
+        if (item.autoRule) return;
+        const card = document.createElement('div');
+        card.className = 'upcharge-card';
+        card.innerHTML = `
+          <div class="upcharge-head">
+            <strong>${item.label}</strong>
+            <label style="margin:0; display:flex; align-items:center; gap:8px; color:var(--text); font-weight:700;">
+              <input type="checkbox" data-active-upcharge="${item.key}" style="width:auto; transform: scale(1.1);" />
+              Apply to this quote
+            </label>
+          </div>
+          <div class="help">Default setting: ${item.percent}% and ${formatMoney2(item.flat)}.</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function renderActiveUpcharges() {
+      const hasInop = getVehicles().some(v => v.is_inoperable);
+      const inopBox = document.querySelector('[data-active-upcharge="inop"]');
+      if (inopBox) inopBox.checked = hasInop;
+      const enclosedBox = document.querySelector('[data-active-upcharge="enclosed"]');
+      if (enclosedBox) enclosedBox.checked = $('trailerType').value === 'enclosed';
+    }
+
+    function clearZipFields(prefix) {
+      $(prefix + 'City').value = '';
+      $(prefix + 'State').value = '';
+    }
+
+    async function lookupZipField(zip, prefix) {
+      const cleanZip = String(zip || '').replace(/\D/g, '').slice(0, 5);
+      if (cleanZip.length !== 5) {
+        clearZipFields(prefix);
+        return;
+      }
+      try {
+        const response = await fetch(`/api/zip/${cleanZip}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'ZIP lookup failed');
+        $(prefix + 'City').value = data.city || '';
+        $(prefix + 'State').value = data.state || '';
+      } catch (_) {
+        clearZipFields(prefix);
+      }
+    }
+
+    async function lookupRouteInfo() {
+      const pickupZip = $('pickupZip').value.trim();
+      const deliveryZip = $('deliveryZip').value.trim();
+      if (pickupZip.length !== 5 || deliveryZip.length !== 5) {
+        setStatus('Please enter both 5-digit ZIP codes.', 'error');
+        return;
+      }
+      await Promise.all([
+        lookupZipField(pickupZip, 'pickup'),
+        lookupZipField(deliveryZip, 'delivery')
+      ]);
+      try {
+        const response = await fetch(`/api/route-info?pickup_zip=${encodeURIComponent(pickupZip)}&dropoff_zip=${encodeURIComponent(deliveryZip)}`);
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error || 'Route lookup failed');
+        $('routeMiles').value = data.miles;
+        $('routeHours').value = data.hours;
+        updateComputedMargin();
+        setStatus('ZIP, miles, and route info loaded.', 'ok');
+      } catch (err) {
+        setStatus(err.message || 'Route lookup failed.', 'error');
+      }
+    }
+
+    function laneDifficultyFromCategories(pickupCategory, dropoffCategory) {
+      const p = String(pickupCategory || '').trim();
+      const d = String(dropoffCategory || '').trim();
+      if (!p || !d || p === 'Unknown' || d === 'Unknown') return 'Unknown';
+      if (p === 'Very Remote' || d === 'Very Remote') return 'Very Hard';
+      if (p === 'Rural' || d === 'Rural') return 'Hard';
+      if (p === 'Metro' && d === 'Metro') return 'Easy';
+      return 'Standard';
+    }
+
+    function getComputedMarginPercent() {
+      const miles = Number($('routeMiles').value || 0);
+      const floor = Number($('marginFloor').value || 14);
+      const raw = 30 - (miles * 0.008);
+      return Math.max(floor, raw);
+    }
+
+    function updateComputedMargin() {
+      const pct = getComputedMarginPercent();
+      $('computedMarginPct').value = Number.isFinite(pct) ? `${pct.toFixed(2)}%` : '';
+    }
+
+    function getWeightInputs() {
+      const historical = Number($('historicalPrice').value || 0);
+      const central = Number($('centralDispatchPrice').value || 0);
+      const sd = Number($('superDispatchPrice').value || 0);
+      const present = [
+        { key: 'historical', value: historical, weight: 0.50, label: 'Autosled Historical' },
+        { key: 'central', value: central, weight: 0.25, label: 'Central Dispatch' },
+        { key: 'superdispatch', value: sd, weight: 0.25, label: 'SuperDispatch' }
+      ].filter(x => Number.isFinite(x.value) && x.value > 0);
+
+      if (present.length === 3) return present;
+      if (present.length === 2) {
+        const total = present.reduce((sum, x) => sum + x.weight, 0);
+        return present.map(x => ({ ...x, weight: x.weight / total }));
+      }
+      if (present.length === 1) return [{ ...present[0], weight: 1 }];
+      return [];
+    }
+
+    function getSettingByKey(key) {
+      return upchargeSettings.find(item => item.key === key);
+    }
+
+    function getActiveUpcharges() {
+      const laneDifficulty = $('laneDifficulty').value.trim();
+      const active = [];
+
+      if (laneDifficulty === 'Easy') active.push({ ...getSettingByKey('lane_easy'), appliedBy: 'RUCA lane difficulty' });
+      if (laneDifficulty === 'Standard') active.push({ ...getSettingByKey('lane_standard'), appliedBy: 'RUCA lane difficulty' });
+      if (laneDifficulty === 'Hard') active.push({ ...getSettingByKey('lane_hard'), appliedBy: 'RUCA lane difficulty' });
+      if (laneDifficulty === 'Very Hard') active.push({ ...getSettingByKey('lane_very_hard'), appliedBy: 'RUCA lane difficulty' });
+
+      document.querySelectorAll('[data-active-upcharge]').forEach(box => {
+        if (box.checked) {
+          const key = box.dataset.activeUpcharge;
+          const setting = getSettingByKey(key);
+          if (setting) active.push({ ...setting, appliedBy: 'Quote selection' });
+        }
+      });
+
+      return active;
+    }
+
+    async function getSuperDispatchQuote() {
+      clearStatus();
+      const pickupZip = $('pickupZip').value.trim();
+      const deliveryZip = $('deliveryZip').value.trim();
+      if (pickupZip.length !== 5 || deliveryZip.length !== 5) {
+        setStatus('Please enter both 5-digit ZIP codes.', 'error');
+        return;
+      }
+
+      await Promise.all([
+        lookupZipField(pickupZip, 'pickup'),
+        lookupZipField(deliveryZip, 'delivery')
+      ]);
+
+      const vehicles = getVehicles().map(v => {
+        const out = {
+          type: v.type,
+          is_inoperable: v.is_inoperable,
+          make: v.make,
+          model: v.model
+        };
+        if (v.year) out.year = v.year;
+        return out;
+      });
+
+      try {
+        setStatus('Requesting SuperDispatch quote...', 'ok');
+        const response = await fetch('/quote', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            pickup: {
+              city: $('pickupCity').value.trim(),
+              state: $('pickupState').value.trim(),
+              zip: pickupZip
+            },
+            delivery: {
+              city: $('deliveryCity').value.trim(),
+              state: $('deliveryState').value.trim(),
+              zip: deliveryZip
+            },
+            trailer_type: $('trailerType').value,
+            vehicles
+          })
+        });
+
+        const text = await response.text();
+        let data;
+        try {
+          data = JSON.parse(text);
+        } catch {
+          $('rawResponse').textContent = text;
+          throw new Error('Server returned non-JSON response.');
+        }
+
+        $('rawResponse').textContent = JSON.stringify(data, null, 2);
+        if (!response.ok) throw new Error(data.error || 'Quote request failed.');
+
+        const pricing = data?.superdispatch?.data || {};
+        $('superDispatchPrice').value = pricing.price ?? '';
+        $('sdPriceMetric').textContent = pricing.price != null ? formatMoney(Number(pricing.price)) : '—';
+        $('sdPricePerMile').textContent = pricing.price_per_mile != null ? String(pricing.price_per_mile) : '—';
+        $('sdConfidence').textContent = pricing.confidence != null ? `${pricing.confidence}` : '—';
+        $('pickupRuca').value = data?.pickup_access?.ruca_code ?? 'Unknown';
+        $('pickupCategory').value = data?.pickup_access?.ruca_category ?? 'Unknown';
+        $('dropoffRuca').value = data?.dropoff_access?.ruca_code ?? 'Unknown';
+        $('dropoffCategory').value = data?.dropoff_access?.ruca_category ?? 'Unknown';
+        $('laneDifficulty').value = data?.lane_difficulty || laneDifficultyFromCategories($('pickupCategory').value, $('dropoffCategory').value);
+        $('appliedLaneRule').value = $('laneDifficulty').value;
+
+        if (!$('routeMiles').value) {
+          await lookupRouteInfo();
+        } else {
+          updateComputedMargin();
+        }
+        renderActiveUpcharges();
+        setStatus('SuperDispatch quote loaded successfully.', 'ok');
+      } catch (err) {
+        setStatus(err.message || 'Quote request failed.', 'error');
+      }
+    }
+
+    function calculateQuote(event) {
+      event.preventDefault();
+      clearStatus();
+
+      const inputs = getWeightInputs();
+      if (!inputs.length) {
+        setStatus('Enter at least one transporter price.', 'error');
+        return;
+      }
+
+      const miles = Number($('routeMiles').value || 0);
+      if (!miles) {
+        setStatus('Load route miles first so the margin curve can be applied.', 'error');
+        return;
+      }
+
+      const weightedCost = inputs.reduce((sum, item) => sum + (item.value * item.weight), 0);
+      const activeUpcharges = getActiveUpcharges();
+      const totalPct = activeUpcharges.reduce((sum, item) => sum + Number(item.percent || 0), 0);
+      const totalFlat = activeUpcharges.reduce((sum, item) => sum + Number(item.flat || 0), 0);
+      const adjustedCost = weightedCost * (1 + (totalPct / 100)) + totalFlat;
+      const marginPct = getComputedMarginPercent();
+      const recommendedPrice = adjustedCost / (1 - (marginPct / 100));
+      const grossMarginDollars = recommendedPrice - adjustedCost;
+      const grossMarginPct = grossMarginDollars / recommendedPrice * 100;
+
+      $('summaryTransporterCost').textContent = formatMoney(weightedCost);
+      $('summaryAdjustedCost').textContent = formatMoney(adjustedCost);
+      $('summaryCustomerPrice').textContent = formatMoney(recommendedPrice);
+      $('summaryMargin').textContent = formatMoney(grossMarginDollars);
+      $('summaryMarginSub').textContent = `${formatPct(grossMarginPct)} gross margin`;
+      $('totalPercentUpcharge').value = formatPct(totalPct);
+      $('totalFlatUpcharge').value = formatMoney2(totalFlat);
+      $('appliedLaneRule').value = $('laneDifficulty').value || 'Unknown';
+      updateComputedMargin();
+
+      const logic = [];
+      logic.push(`Weighted transporter estimate:`);
+      inputs.forEach(item => {
+        logic.push(`${item.label}: ${formatMoney2(item.value)} × ${(item.weight * 100).toFixed(0)}% = ${formatMoney2(item.value * item.weight)}`);
+      });
+      logic.push(`Estimated transporter cost before upcharges = ${formatMoney2(weightedCost)}`);
+
+      if (activeUpcharges.length) {
+        logic.push(`Applied upcharges:`);
+        activeUpcharges.forEach(item => {
+          logic.push(`${item.label} (${item.appliedBy}) = ${Number(item.percent || 0).toFixed(1)}% and ${formatMoney2(item.flat || 0)}`);
+        });
+      } else {
+        logic.push('No percentage or flat-dollar upcharges were applied.');
+      }
+
+      logic.push(`Total percentage upcharge = ${totalPct.toFixed(1)}%`);
+      logic.push(`Total flat-dollar upcharge = ${formatMoney2(totalFlat)}`);
+      logic.push(`Adjusted transporter cost = ${formatMoney2(weightedCost)} × ${ (1 + totalPct / 100).toFixed(4) } + ${formatMoney2(totalFlat)} = ${formatMoney2(adjustedCost)}`);
+      logic.push(`Mileage margin curve = 30% - (${miles} × 0.008%) with a floor of ${$('marginFloor').value}% = ${marginPct.toFixed(2)}% applied margin`);
+      logic.push(`Recommended customer price = ${formatMoney2(adjustedCost)} ÷ (1 - ${(marginPct / 100).toFixed(4)}) = ${formatMoney2(recommendedPrice)}`);
+      logic.push(`Gross margin = ${formatMoney2(grossMarginDollars)} (${grossMarginPct.toFixed(2)}%)`);
+
+      $('logicSteps').innerHTML = logic.map(line => `<li>${line}</li>`).join('');
+      setStatus('Recommended price calculated successfully.', 'ok');
+    }
+
+    function saveSettingsFromUI() {
+      const updated = structuredClone(DEFAULT_SETTINGS).map(item => {
+        const percentEl = document.querySelector(`[data-settings-percent="${item.key}"]`);
+        const flatEl = document.querySelector(`[data-settings-flat="${item.key}"]`);
+        return {
+          ...item,
+          percent: Number(percentEl?.value || 0),
+          flat: Number(flatEl?.value || 0)
+        };
+      });
+      saveStoredSettings(updated);
+      buildActiveUpchargesUI();
+      renderActiveUpcharges();
+      setSettingsStatus('Settings saved on this device.', 'ok');
+    }
+
+    function resetSettingsToDefault() {
+      saveStoredSettings(structuredClone(DEFAULT_SETTINGS));
+      buildSettingsUI();
+      buildActiveUpchargesUI();
+      renderActiveUpcharges();
+      setSettingsStatus('Settings reset to defaults.', 'ok');
+    }
+
+    function copyLaneDefaultsToQuote() {
+      renderActiveUpcharges();
+      $('appliedLaneRule').value = $('laneDifficulty').value || 'Unknown';
+      setSettingsStatus('Current lane defaults are ready to be applied on the quote screen.', 'ok');
+      document.querySelector('[data-tab="quoteTab"]').click();
+    }
+
+    function resetQuoteScreen() {
+      clearStatus();
+      ['pickupZip','deliveryZip','pickupCity','pickupState','deliveryCity','deliveryState','routeMiles','routeHours','pickupRuca','dropoffRuca','pickupCategory','dropoffCategory','laneDifficulty','historicalPrice','centralDispatchPrice','superDispatchPrice','computedMarginPct','totalPercentUpcharge','totalFlatUpcharge','appliedLaneRule'].forEach(id => { $(id).value = ''; });
+      $('marginFloor').value = '14';
+      $('trailerType').value = 'open';
+      $('summaryTransporterCost').textContent = '—';
+      $('summaryAdjustedCost').textContent = '—';
+      $('summaryCustomerPrice').textContent = '—';
+      $('summaryMargin').textContent = '—';
+      $('summaryMarginSub').textContent = 'Margin dollars and %';
+      $('sdPriceMetric').textContent = '—';
+      $('sdPricePerMile').textContent = '—';
+      $('sdConfidence').textContent = '—';
+      $('rawResponse').textContent = 'No quote yet.';
+      $('logicSteps').innerHTML = '<li>Enter lane details, transporter prices, and any active upcharges.</li><li>Run the calculation to generate the weighted transporter estimate and customer price.</li>';
+      buildVehiclesUI();
+      buildActiveUpchargesUI();
+      renderActiveUpcharges();
+    }
+
+    wireTabs();
+    buildSettingsUI();
+    buildVehiclesUI();
+    buildActiveUpchargesUI();
+    renderActiveUpcharges();
+    updateComputedMargin();
+    loadSession();
+
+    $('addVehicleBtn').addEventListener('click', () => addVehicleCard());
+    $('lookupLaneBtn').addEventListener('click', lookupRouteInfo);
+    $('getQuoteBtn').addEventListener('click', getSuperDispatchQuote);
+    $('quoteForm').addEventListener('submit', calculateQuote);
+    $('saveSettingsBtn').addEventListener('click', saveSettingsFromUI);
+    $('resetSettingsBtn').addEventListener('click', resetSettingsToDefault);
+    $('copyLaneDefaultsBtn').addEventListener('click', copyLaneDefaultsToQuote);
+    $('resetBtn').addEventListener('click', resetQuoteScreen);
+    $('marginFloor').addEventListener('change', updateComputedMargin);
+    $('trailerType').addEventListener('change', renderActiveUpcharges);
+
+    $('pickupZip').addEventListener('input', (e) => lookupZipField(e.target.value, 'pickup'));
+    $('deliveryZip').addEventListener('input', (e) => lookupZipField(e.target.value, 'delivery'));
+    $('vehiclesContainer').addEventListener('change', renderActiveUpcharges);
+  </script>
 </body>
 </html>
